@@ -1,0 +1,184 @@
+\documentclass[a4paper,11pt]{book}
+\usepackage{listings}
+\usepackage{xspace}
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage[official]{eurosym}
+
+\decimalpoint
+\usepackage{dcolumn}
+\newcolumntype{.}{D{.}{\esperiod}{-1}}
+\makeatletter
+\addto\shorthandsspanish{\let\esperiod\es@period@code}
+\makeatother
+
+\RequirePackage{verbatim}
+\usepackage{fancyhdr}
+\usepackage{graphics, graphicx, float}
+\usepackage{afterpage}
+
+\usepackage{longtable}
+
+\usepackage[pdfborder={0 0 0}]{hyperref}
+
+% ********************************************************************
+% Re-usable information
+% ********************************************************************
+\newcommand{\myTitle}{MineRVa\xspace}
+\newcommand{\mySubtitle}{Generador de museos virtuales\xspace}
+\newcommand{\myEnglishSubtitle}{Virtual museum generator\xspace}
+\newcommand{\myDegree}{Máster en Ingeniería Informática\xspace}
+\newcommand{\myName}{Pedro Manuel Gómez-Portillo López\xspace}
+\newcommand{\myProf}{Francisco Luis Gutiérrez Vela\xspace}
+\newcommand{\myFaculty}{Escuela Técnica Superior de Ingenierías Informática y de Telecomunicación\xspace}
+\newcommand{\myFacultyShort}{E.T.S. de Ingenierías Informática y de Telecomunicación\xspace}
+\newcommand{\myDepartment}{Departamento\xspace}
+\newcommand{\myUni}{\protect{Universidad de Granada}\xspace}
+\newcommand{\myLocation}{Granada\xspace}
+\newcommand{\myTime}{\today\xspace}
+\newcommand{\myPalabrasclave}{palabras, clave}
+\newcommand{\myKeywords}{key, words}
+
+
+\hypersetup{
+pdfauthor = {\myName (gomezportillo@correo.ugr.es)},
+pdftitle = {\myTitle},
+pdfsubject = {},
+pdfkeywords = {\myKeywords},
+pdfproducer = {pdflatex}
+}
+
+\usepackage{url}
+\usepackage{colortbl,longtable}
+\usepackage[stable]{footmisc}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LO]{\leftmark}
+\fancyhead[RE]{\rightmark}
+\fancyhead[RO,LE]{\textbf{\thepage}}
+\renewcommand{\chaptermark}[1]{\markboth{\textbf{#1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\textbf{\thesection. #1}}}
+
+\setlength{\headheight}{1.5\headheight}
+
+\newcommand*\justify{
+	\fontdimen2\font=0.4em
+	\fontdimen3\font=0.2em
+	\fontdimen4\font=0.1em
+	\fontdimen7\font=0.1em
+	\hyphenchar\font=`\-
+}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+\definecolor{gray30}{gray}{.94}
+
+\lstset{ frame=Ltb,
+     framerule=0.5pt,
+     aboveskip=0.5cm,
+     framextopmargin=3pt,
+     framexbottommargin=3pt,
+     framexleftmargin=0.1cm,
+     framesep=0pt,
+     rulesep=.4pt,
+     backgroundcolor=\color{gray97},
+     rulesepcolor=\color{black},
+     stringstyle=\ttfamily,
+     showstringspaces = false,
+     basicstyle=\scriptsize\ttfamily,
+     commentstyle=\color{gray45},
+     keywordstyle=\bfseries,
+     numbers=left,
+     numbersep=6pt,
+     numberstyle=\tiny,
+     numberfirstline = false,
+     breaklines=true,
+}
+
+\lstnewenvironment{listing}[1][]
+   {\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+\lstdefinestyle{C} {
+	basicstyle=\scriptsize,
+	frame=single,
+	language=C,
+	numbers=left
+}
+
+\lstdefinestyle{C++} {
+	basicstyle=\small,
+	frame=single,
+	backgroundcolor=\color{gray30},
+	language=C++,
+	numbers=left
+}
+
+\lstdefinestyle{Consola} {
+   	basicstyle=\scriptsize\bf\ttfamily,
+    backgroundcolor=\color{gray30},
+    frame=single,
+    language=shell,
+    numbers=none
+}
+
+\lstdefinestyle{XML} {
+	basicstyle=\scriptsize,
+	frame=single,
+	language=XML,
+	numbers=left
+}
+
+\newcommand{\bigrule}{\titlerule[0.5mm]}
+
+\makeatletter
+\def\clearpage{%
+  \ifvmode
+    \ifnum \@dbltopnum =\m@ne
+      \ifdim \pagetotal <\topskip
+        \hbox{}
+      \fi
+    \fi
+  \fi
+  \newpage
+  \thispagestyle{empty}
+  \write\m@ne{}
+  \vbox{}
+  \penalty -\@Mi
+}
+\makeatother
+
+\usepackage{pdfpages}
+\begin{document}
+\input{portada/portada}
+\input{prefacios/prefacio}
+\frontmatter
+\tableofcontents
+\listoffigures
+\listoftables
+
+\mainmatter
+\setlength{\parskip}{5pt}
+
+\input{capitulos/01_introduccion}
+\input{capitulos/02_estado_arte}
+\input{capitulos/03_analisis_problema}
+\input{capitulos/04_tecnologia}
+\input{capitulos/05_metodologias}
+\input{capitulos/06_plan_entregas}
+\input{capitulos/07_desarrollo}
+\input{capitulos/08_conclusiones}
+
+\nocite{*}
+\bibliography{bibliografia/bibliografia}
+\addcontentsline{toc}{chapter}{Bibliografía}
+\bibliographystyle{plain}
+
+\input{capitulos/10_apendices}
+
+\end{document}
