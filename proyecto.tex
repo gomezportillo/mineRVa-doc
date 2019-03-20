@@ -28,7 +28,7 @@
 % Re-usable information
 % ********************************************************************
 \newcommand{\myTitle}{MineRVa\xspace}
-\newcommand{\mySubtitle}{Generador de museos virtuales\xspace}
+\newcommand{\mySubtitle}{Experiencia de juego en realidad virtual en un museo\xspace}
 \newcommand{\myEnglishSubtitle}{Virtual museum generator\xspace}
 \newcommand{\myDegree}{Máster en Ingeniería Informática\xspace}
 \newcommand{\myName}{Pedro Manuel Gómez-Portillo López\xspace}
@@ -73,6 +73,19 @@ pdfproducer = {pdflatex}
 	\hyphenchar\font=`\-
 }
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\newcommand{\dedication}[1]{%
+  \cleardoublepage
+  \thispagestyle{empty}
+  \null\vspace{\stretch{1}}
+  \begin{flushright}
+    \textit{#1}
+  \end{flushright}
+  \vspace{\stretch{2}}\null
+  \cleardoublepage
+}
+
+\newcommand{\MineRVa}{\textit{MineRVa} }
 
 \definecolor{gray97}{gray}{.97}
 \definecolor{gray75}{gray}{.75}
@@ -156,7 +169,7 @@ pdfproducer = {pdflatex}
 \usepackage{pdfpages}
 \begin{document}
 \input{portada/portada}
-\input{prefacios/prefacio}
+\input{portada/prefacio}
 \frontmatter
 \tableofcontents
 \listoffigures
