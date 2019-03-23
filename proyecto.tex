@@ -23,6 +23,8 @@
 \usepackage{longtable}
 
 \usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage[printonlyused]{acronym}
+\newcommand{\Acro}[2]{\acro{#1}{#2}\acused{#1}}
 
 % ********************************************************************
 % Re-usable information
@@ -84,8 +86,6 @@ pdfproducer = {pdflatex}
   \vspace{\stretch{2}}\null
   \cleardoublepage
 }
-
-\newcommand{\MineRVa}{\textit{MineRVa} }
 
 \definecolor{gray97}{gray}{.97}
 \definecolor{gray75}{gray}{.75}
@@ -167,6 +167,28 @@ pdfproducer = {pdflatex}
 \makeatother
 
 \usepackage{pdfpages}
+
+
+%%------------- ESTILOS PROPIOS ---------------------------
+
+\newcommand{\MineRVa}{\textit{MineRVa} }
+\renewcommand*{\lstlistlistingname}{Índice de listados}
+\renewcommand{\listtablename}{Índice de tablas} %% not working 
+
+\addto\captionsenglish{\renewcommand{\appendixname}{Apéndices}}
+
+\newcommand{\appendixtitle} {
+  \cleardoublepage
+%  \thispagestyle{empty}%
+  \vspace*{5cm}%
+  \begin{center}%
+    \sffamily\scshape\Large\scalebox{3}{APÉNDICES}
+  \end{center}%
+}%
+
+%%---------------------------------------------------------
+
+
 \begin{document}
 \input{portada/portada}
 \input{portada/prefacio}
@@ -174,9 +196,11 @@ pdfproducer = {pdflatex}
 \tableofcontents
 \listoffigures
 \listoftables
+\lstlistoflistings
+\input{portada/acronimos}
 
 \mainmatter
-\setlength{\parskip}{5pt}
+\setlength{\parskip}{8pt}
 
 \input{capitulos/01_introduccion}
 \input{capitulos/02_estado_arte}
@@ -186,12 +210,12 @@ pdfproducer = {pdflatex}
 \input{capitulos/06_plan_entregas}
 \input{capitulos/07_desarrollo}
 \input{capitulos/08_conclusiones}
+\input{capitulos/10_apendices}
 
 \nocite{*}
 \bibliography{bibliografia/bibliografia}
 \addcontentsline{toc}{chapter}{Bibliografía}
-\bibliographystyle{plain}
+\bibliographystyle{apalike}
 
-\input{capitulos/10_apendices}
 
 \end{document}
