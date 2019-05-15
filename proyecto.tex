@@ -30,7 +30,7 @@
 % Re-usable information
 % ********************************************************************
 \newcommand{\myTitle}{MineRVa\xspace}
-\newcommand{\mySubtitle}{Experiencia de juego en realidad virtual en un museo\xspace}
+\newcommand{\mySubtitle}{Experiencia de juego en Realidad Virtual en un museo\xspace}
 \newcommand{\myEnglishSubtitle}{Virtual museum generator\xspace}
 \newcommand{\myDegree}{Máster en Ingeniería Informática\xspace}
 \newcommand{\myName}{Pedro Manuel Gómez-Portillo López\xspace}
@@ -170,6 +170,8 @@ pdfproducer = {pdflatex}
 
 
 %%------------- ESTILOS PROPIOS ---------------------------
+\usepackage{caption}
+\captionsetup{justification=centering}
 
 \newcommand{\MineRVa}{\textit{MineRVa} }
 \renewcommand*{\lstlistlistingname}{Índice de listados}
@@ -179,12 +181,12 @@ pdfproducer = {pdflatex}
 
 \newcommand{\appendixtitle} {
   \cleardoublepage
-%  \thispagestyle{empty}%
-  \vspace*{5cm}%
-  \begin{center}%
+%  \thispagestyle{empty}
+  \vspace*{5cm}
+  \begin{center}
     \sffamily\scshape\Large\scalebox{3}{APÉNDICES}
-  \end{center}%
-}%
+  \end{center}
+}
 
 %%---------------------------------------------------------
 
