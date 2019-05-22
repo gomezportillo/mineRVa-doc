@@ -189,6 +189,14 @@ pdfproducer = {pdflatex}
 }
 
 \usepackage{csquotes}
+\usepackage{eurosym}
+
+%% -- letras capitales
+\usepackage{lettrine}
+\newcommand{\drop}[2]{
+  \lettrine[lines=2]
+  {\textcolor[gray]{0.4}{\textbf{#1}}}{#2}
+  }
 
 %%---------------------------------------------------------
 
