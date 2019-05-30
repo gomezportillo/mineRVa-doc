@@ -1,96 +1,21 @@
 \chapter{Plan de entregas}
 \label{chap:plan_entregas}
 
-\drop{E}{n} cualquier proyectos es necesario planear de antemano las distintas iteraciones en las que se dividirá el trabajo, pero en los casos en los que se trabaja con nuevas tecnologías esto se vuelve esencial, ya que esto nos facilita el realizar un seguimiento del avance y la evolución del proyecto.
+\drop{E}{  n} cualquier proyectos es necesario planear de antemano las distintas iteraciones en las que se dividirá el trabajo, pero en los casos en los que se trabaja con nuevas tecnologías esto se vuelve esencial, ya que esto nos facilita el realizar un seguimiento del avance y la evolución del proyecto.
 
 Un plan de entregas es un proceso que nos permite programar los distintos esfuerzos que se desarrollarán a lo largo de un proyecto, aportando  una visión global del mismo.
 
 En este capítulo se presentará y desglosará el plan de entregas seguido para este \acs{TFM}. Además, al final del mismo se presenta una tabla con la descripción de las entregas que se ha usado a lo largo del desarrollo para facilitar su seguimiento.
 
-De aquí en adelante se hablará de entrega para definir el esfuerzo que genera un entregable y de iteración para describir las subtareas en las que se han dividido cada una de las entregas.
+De aquí en adelante se hablará de \textit{entrega} para definir el esfuerzo que genera un entregable y de iteración para describir las subtareas en las que se han dividido cada una de las entregas.
 
 \section{Plan de entregas}
 
-El desarrollo del proyecto ha sigo guiado por un total de \textbf{\textcolor{red}{X}} entregas, cada una subdividida a su vez en una o varias iteraciones. El resultado de cada una de las entregas ha sido un entregable, permitiendo de este modo realizar un seguimiento preciso del desarrollo del proyecto.
-
-Además, al final de cada entrega se generará un vídeo de entre 4 y 6 minutos mostrando los avances obtenidos a lo largo de la misma y que será subido a la plataforma YouTube. Al final de la descripción del desarrollo de cada entrega, en el capítulo \ref{chap:desarrollo}, se indicarán los enlaces  a cada uno de ellos.
-
-El proyecto se inició a principios del segundo semestre y se planeó terminar a finales de junio, por lo que las fechas de las entregas se deberán ajustar para no sobrepasarlas. Además, se intentará que cada una dure aproximadamente dos semanas, ya que es un tiempo razonable para, aun compaginando el desarrollo de este proyecto con las seis asignaturas del segundo semestre, generar un entregable con el suficiente valor como para marcar el final de la entrega.
-
-\subsection{Entrega 0}
-
-Se utilizará la primera entrega del proyecto como toma de contacto con el entorno de desarrollo, las tecnologías a utilizar y el proyecto en sí.
-
-Como tareas se definirán generar un primer prototipo de la narrativa del proyecto enmarcándola en un museo creíble y realista y configurar el \acs{IDE} y las librerías.
-
-Los entregables resultantes de esta entrega serán, por un lado, un documento describiendo la narrativa y la estructura de salas del museo, y por el otro un proyecto Unity adecuadamente configurado que se pueda ejecutar con el headset \acs{VR} proporcionadas y en el que el jugador pueda moverse de manera adecuada.
-
-\begin{itemize}
-    \item \textbf{Fecha de inicio.} 1 de febrero de 2019
-    \item \textbf{Fecha de fin.} 15 de febrero de 2019
-\end{itemize}
-
-\subsection{Entrega 1}
-
-Una vez que el contamos con una narrativa de la que partir y un entorno de desarrollo correctamente configurado, el objetivo principal de la la siguiente entrega será aprender a exportar correctamente modelos 3D de Blender a Unity y a trabajar de un modo básico con el framework \acs{VRTK}.
-
-Esta entrega tendrá varias iteraciones; primero, modelar una antesala al museo relativamente simple en Blender, aplicarle materiales y texturas y aprender a importar todo correctamente desde Unity y una vez conseguido, el siguiente paso será configurar la escena para dotarla de físicas y colisiones para que al iniciar el juego el jugador pueda moverse por ella de un modo similar a como lo haría en una habitación real.
-
-Siguiendo con las salas, y una vez aprendido cómo exportarlas al motor del juego, se modelará la sala que actuará como tutorial al juego y a sus dinámicas y se modelarán y configurarán un par de piezas de fruta con las que el usuario pueda interactuar; cogerlas y soltarlas encima de otros modelos e incluso lanzarlas y que estas se comporten de manera orgánica.
-
-El resultado de esta entrega será una versión del proyecto con las dos salas explicadas anteriormente y que permita al usuario moverse entre ellas.
-
-\begin{itemize}
-    \item \textbf{Fecha de inicio.} 16 de febrero de 2019
-    \item \textbf{Fecha de fin.} 28 de febrero de 2019
-\end{itemize}
-
-\subsection{Entrega 2}
-
-La siguiente entrega consistirá en seguir aprendiendo a trabajar con el framework elegido, permitiendo realizar tareas inicialmente más difíciles como mover objetos programáticamente haciendo uso del framework de \acs{VR}.
-
-En lo que respecta a sus iteraciones, y como la siguiente sala a modelar, ambientada en el gótico y la primera temática del museo, consta de muchos detalles y técnicas más avanzadas de modelado, y por tanto se espera dedicar más tiempo en este trabajo, será la única que se modelará. Por otro lado, se volverá a las dos primeras salas ya modeladas para terminarlas y mejorar su apartado gráfico. Además, si sobra tiempo, se comenzará a modelar la siguiente sala.
-
-El entregable por tanto, será una versión del proyecto en la que se puede hacer uso de aspectos más avanzados de las librerías utilizadas para permitir al usuario interactuar con modelos tridimensionales que actúen como interfaces para controlar otros elementos. Siguiendo con el documento inicial, se conseguirá abrir y cerrar una puerta corredera a la que inicialmente el jugador no tiene acceso interactuando con una palanca.
-
-\begin{itemize}
-    \item \textbf{Fecha de inicio.} 1 de marzo de 2019
-    \item \textbf{Fecha de fin.} 15 de marzo de 2019
-\end{itemize}
-
-\subsection{Entrega 3}
-
-La tercera entrega del proyecto pretende ser algo más práctica. Una vez teniendo más soltura con el framework y el entorno de desarrollo, se valorará la inclusión de técnicas de interacción mucho más avanzadas, que quizá en un principio por falta de experiencia con las tecnologías y las librerías utilizadas ni siquiera se plantearon. Por ejemplo, se estudiará el incluir elementos como un arco o una pistola que el jugador pueda disparar para acertar a objetivos. Además, se trabajará en tareas que inicialmente podían resultar más difíciles como hacer un fundido a negro al cambiar de sala, mostrar la descripción de las obras de arte de las salas con la interacción el jugador con los mandos o teletransportar un objeto de vuelta a su posición original si toca el suelo para que el jugador no tenga que agacharse a recogerlo.
-
-Paralelamente, se seguirá trabajando en el resto de salas, perfilándolas, y terminado aquellos modelos dejados a medias.
-
-El resultado de esta entrega, por lo tanto, serán las 4 salas anteriores prácticamente terminadas y un prototipo funcional con alguna técnica de interacción avanzada para la quinta.
-
-\begin{itemize}
-    \item \textbf{Fecha de inicio.} 15 de marzo de 2019
-    \item \textbf{Fecha de fin.} 31 de marzo de 2019
-\end{itemize}
-
-\subsection{Entrega 4}
-
-La cuarta entre del proyecto partirá del prototipo desarrollado en la entrega anterior para modelar la siguiente sala del proyecto y dotarla de la lógica necesaria para que la interacción que se desarrolle en ella sea interesante y divertida para el jugador. Además, se comenzará a trabajar en la siguiente sala, la sexta, y se modelará su estructura básica.
-
-El principal problema de esta entrega es que dadas las fechas en las que se desarrollará, previsiblemente se solapará con Semana Santa y los distintos trabajos de las asignaturas del máster, por lo que se le dotará del doble de tiempo para terminarla, es decir, un mes.
-
-\begin{itemize}
-    \item \textbf{Fecha de inicio.} 1 de abril de 2019
-    \item \textbf{Fecha de fin.} 30 de abril de 2019
-\end{itemize}
-
-\subsection{Entrega 5}
-
-La quinta entrega
-
-\section{Descripción de las entregas}
-
-En la tabla \ref{tab:entregas1}...
+En las tablas siguientes puede verse un resumen de las iteraciones y sus tareas, aunque en la sección posterior se explicarán con más detalle.
 
 Además, al final de todas las entrega se perfilarán las salas anteriores con el fin de mejorarlas de manera progresiva; como siempre será así, se ha evitado incluir esta iteración en la siguiente tabla.
+
+Por último, la iteración final estará centrada en realizar una evaluación del proyecto con usuarios reales quieres, tras completar el juego, responderán dos cuestionarios con el objetivo de conocer su grado de satisfacción con el juego y su eficacia para aprender los conceptos que se pretende enseñar.
 
 \vspace{0.5cm}
 
@@ -293,3 +218,83 @@ Terminar
 \caption{Plan de entregas III}
 \label{tab:entregas3}
 \end{table}
+
+
+\section{Descripción de las entregas}
+
+
+El desarrollo del proyecto ha sigo guiado por un total de \textbf{\textcolor{red}{X}} entregas, cada una subdividida a su vez en una o varias iteraciones. El resultado de cada una de las entregas ha sido un entregable, permitiendo de este modo realizar un seguimiento preciso del desarrollo del proyecto.
+
+Además, al final de cada entrega se generará un vídeo de entre 4 y 6 minutos mostrando los avances obtenidos a lo largo de la misma y que será subido a la plataforma YouTube. Al final de la descripción del desarrollo de cada entrega, en el capítulo \ref{chap:desarrollo}, se indicarán los enlaces  a cada uno de ellos.
+
+El proyecto se inició a principios del segundo semestre y se planeó terminar a finales de junio, por lo que las fechas de las entregas se deberán ajustar para no sobrepasarlas. Además, se intentará que cada una dure aproximadamente dos semanas, ya que es un tiempo razonable para, aun compaginando el desarrollo de este proyecto con las seis asignaturas del segundo semestre, generar un entregable con el suficiente valor como para marcar el final de la entrega.
+
+\subsection{Entrega 0}
+
+Se utilizará la primera entrega del proyecto como toma de contacto con el entorno de desarrollo, las tecnologías a utilizar y el proyecto en sí.
+
+Como tareas se definirán generar un primer prototipo de la narrativa del proyecto enmarcándola en un museo creíble y realista y configurar el \acs{IDE} y las librerías.
+
+Los entregables resultantes de esta entrega serán, por un lado, un documento describiendo la narrativa y la estructura de salas del museo, y por el otro un proyecto Unity adecuadamente configurado que se pueda ejecutar con el headset \acs{VR} proporcionadas y en el que el jugador pueda moverse de manera adecuada.
+
+\begin{itemize}
+    \item \textbf{Fecha de inicio.} 1 de febrero de 2019
+    \item \textbf{Fecha de fin.} 15 de febrero de 2019
+\end{itemize}
+
+\subsection{Entrega 1}
+
+Una vez que el contamos con una narrativa de la que partir y un entorno de desarrollo correctamente configurado, el objetivo principal de la la siguiente entrega será aprender a exportar correctamente modelos 3D de Blender a Unity y a trabajar de un modo básico con el framework \acs{VRTK}.
+
+Esta entrega tendrá varias iteraciones; primero, modelar una antesala al museo relativamente simple en Blender, aplicarle materiales y texturas y aprender a importar todo correctamente desde Unity y una vez conseguido, el siguiente paso será configurar la escena para dotarla de físicas y colisiones para que al iniciar el juego el jugador pueda moverse por ella de un modo similar a como lo haría en una habitación real.
+
+Siguiendo con las salas, y una vez aprendido cómo exportarlas al motor del juego, se modelará la sala que actuará como tutorial al juego y a sus dinámicas y se modelarán y configurarán un par de piezas de fruta con las que el usuario pueda interactuar; cogerlas y soltarlas encima de otros modelos e incluso lanzarlas y que estas se comporten de manera orgánica.
+
+El resultado de esta entrega será una versión del proyecto con las dos salas explicadas anteriormente y que permita al usuario moverse entre ellas.
+
+\begin{itemize}
+    \item \textbf{Fecha de inicio.} 16 de febrero de 2019
+    \item \textbf{Fecha de fin.} 28 de febrero de 2019
+\end{itemize}
+
+\subsection{Entrega 2}
+
+La siguiente entrega consistirá en seguir aprendiendo a trabajar con el framework elegido, permitiendo realizar tareas inicialmente más difíciles como mover objetos programáticamente haciendo uso del framework de \acs{VR}.
+
+En lo que respecta a sus iteraciones, y como la siguiente sala a modelar, ambientada en el gótico y la primera temática del museo, consta de muchos detalles y técnicas más avanzadas de modelado, y por tanto se espera dedicar más tiempo en este trabajo, será la única que se modelará. Por otro lado, se volverá a las dos primeras salas ya modeladas para terminarlas y mejorar su apartado gráfico. Además, si sobra tiempo, se comenzará a modelar la siguiente sala.
+
+El entregable por tanto, será una versión del proyecto en la que se puede hacer uso de aspectos más avanzados de las librerías utilizadas para permitir al usuario interactuar con modelos tridimensionales que actúen como interfaces para controlar otros elementos. Siguiendo con el documento inicial, se conseguirá abrir y cerrar una puerta corredera a la que inicialmente el jugador no tiene acceso interactuando con una palanca.
+
+\begin{itemize}
+    \item \textbf{Fecha de inicio.} 1 de marzo de 2019
+    \item \textbf{Fecha de fin.} 15 de marzo de 2019
+\end{itemize}
+
+\subsection{Entrega 3}
+
+La tercera entrega del proyecto pretende ser algo más práctica. Una vez teniendo más soltura con el framework y el entorno de desarrollo, se valorará la inclusión de técnicas de interacción mucho más avanzadas, que quizá en un principio por falta de experiencia con las tecnologías y las librerías utilizadas ni siquiera se plantearon. Por ejemplo, se estudiará el incluir elementos como un arco o una pistola que el jugador pueda disparar para acertar a objetivos. Además, se trabajará en tareas que inicialmente podían resultar más difíciles como hacer un fundido a negro al cambiar de sala, mostrar la descripción de las obras de arte de las salas con la interacción el jugador con los mandos o teletransportar un objeto de vuelta a su posición original si toca el suelo para que el jugador no tenga que agacharse a recogerlo.
+
+Paralelamente, se seguirá trabajando en el resto de salas, perfilándolas, y terminado aquellos modelos dejados a medias.
+
+El resultado de esta entrega, por lo tanto, serán las 4 salas anteriores prácticamente terminadas y un prototipo funcional con alguna técnica de interacción avanzada para la quinta.
+
+\begin{itemize}
+    \item \textbf{Fecha de inicio.} 15 de marzo de 2019
+    \item \textbf{Fecha de fin.} 31 de marzo de 2019
+\end{itemize}
+
+\subsection{Entrega 4}
+
+La cuarta entre del proyecto partirá del prototipo desarrollado en la entrega anterior para modelar la siguiente sala del proyecto y dotarla de la lógica necesaria para que la interacción que se desarrolle en ella sea interesante y divertida para el jugador. Además, se comenzará a trabajar en la siguiente sala, la sexta, y se modelará su estructura básica.
+
+El principal problema de esta entrega es que dadas las fechas en las que se desarrollará, previsiblemente se solapará con Semana Santa y los distintos trabajos de las asignaturas del máster, por lo que se le dotará del doble de tiempo para terminarla, es decir, un mes.
+
+\begin{itemize}
+    \item \textbf{Fecha de inicio.} 1 de abril de 2019
+    \item \textbf{Fecha de fin.} 30 de abril de 2019
+\end{itemize}
+
+\subsection{Entrega 5}
+
+La quinta entrega
+
