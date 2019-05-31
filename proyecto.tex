@@ -36,6 +36,8 @@
 \newcommand{\myEnglishSubtitle}{Virtual museum generator\xspace}
 \newcommand{\myDegree}{Máster en Ingeniería Informática\xspace}
 \newcommand{\myName}{Pedro Manuel Gómez-Portillo López\xspace}
+\newcommand{\myEmail}{pedromanuel.gomezportillo@gmail.com\xspace}
+\newcommand{\myWebsite}{https://github.com/gomezportillo/mineRVa\xspace}
 \newcommand{\myProf}{Francisco Luis Gutiérrez Vela\xspace}
 \newcommand{\myFaculty}{Escuela Técnica Superior de Ingenierías Informática y de Telecomunicación\xspace}
 \newcommand{\myFacultyShort}{E.T.S. de Ingenierías Informática y de Telecomunicación\xspace}
@@ -202,8 +204,49 @@ pdfproducer = {pdflatex}
 % Cajas grises
 \usepackage{tcolorbox}
 
-%%---------------------------------------------------------
 
+%% -------------------- COPYRIGHT ------------------------------
+\usepackage{setspace}
+
+\newcommand{\myLicense}{
+  \begin{minipage}{1.1\textwidth}
+    \begin{singlespace}
+      
+      \smallskip
+        This document and the information in it are provided in confidence,
+        for the sole purpose of the titled recipient to read and may not be 
+        disclosed to any third party or used for any other purpose without
+        the express written permission of the author.
+
+  \end{singlespace}
+  \end{minipage}
+}
+
+\newcommand{\copyrightpage}{
+  \newpage
+  \begin{singlespace}
+    \null \vfill \noindent
+    \textbf{\myName} \par
+    \smallskip \noindent
+    \myLocation\ -- Spain
+
+    \vspace{-0.65cm}
+    \begin{tabbing}
+      \hspace*{1.7cm} \= \\
+      \emph{E-mail:}   \> \myEmail \\
+      \emph{Web site:} \> \url{https://github.com/gomezportillo/mineRVa} \\
+    \end{tabbing}
+    \vspace{-0.65cm}
+
+    \noindent
+    \copyright\ 2019 \myName \par
+    \smallskip \noindent
+    \begin{minipage}{0.8\textwidth} \raggedright \footnotesize
+      \myLicense
+    \end{minipage}
+  \end{singlespace}
+  \cleardoublepage
+}
 
 \begin{document}
 \input{portada/portada}
