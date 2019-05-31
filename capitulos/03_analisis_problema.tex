@@ -1,39 +1,52 @@
 \chapter{Análisis inicial del problema}
 \label{chap:analisis_problema}
 
-muy parecido a la entrega 0; presentar lo que se va a hacer
-
-linkear también desde aqui el anexo 1, pero hablar de lo que se ha hecho finalmente, no de la idea inicial
-
-gdd
+En este capítulo se presenta el nacimiento y la idea inicial de la que parte este proyecto, así como su narrativa y la descripción del mundo virtual en el que tiene lugar.
 
 \section{Concepto inicial}
 
-Historia de un jugador
+Lo primero que se hizo antes de empezar a trabajar en el proyecto fue proponer una narrativa en la que basar el diseño y desarrollo; por ello, el primer paso que se dio en el proyecto fue redactar el documento \textbf{Guía de salas}, que puede verse en el apéndice \ref{anexo:guia-salas}. En este documento se redactó la primera versión de la narrativa del juego además de una propuesta con las salas que habría en el museo y qué obras de arte y puzzles tendría cada una. Este documento  fue enviado al tutor de este \acs{TFM} y, tras él dar el visto bueno al mismo, se comenzó a trabajar en el proyecto
+
+Además, como se está trabajando siguiendo una metodología enmarcada en el desarrollo de videojuegos, como se explica en profundidad en el capítulo \ref{chap:metodologias}, el siguiente documento en el que se empezó a trabajar y que sirvió de andamio para el proyecto fue el \textbf{\acl{GDD}}, o \acs{GDD}. En un desarrollo real, este documento contendría la información necesaria para que todos los integrantes del proyecto tuvieran clara la idea global del juego, y en este caso es lo mismo; el documento contiene, entre otra información, el resumen, los objetivos o la narrativa del juego, y puede consultarse en el anexo \ref{anexo:gdd}.
+
+En resumen, \MineRVa es un juego con una historia de un jugador ambientado en un museo compuesto por varias habitaciones ambientadas en las principales épocas históricas con diferentes pruebas que el jugador tiene que superar para completar.
 
 \section{Narrativa}
 
-\section{Descripción de salas}
+La narrativa del proyecto ha intentado ser enmarcada en un museo creíble y realista, de tal manera que se ha colocado al jugador en la piel de un detective infalible que ha sido contratado por el museo para resolver el misterio de la desaparición de su mayor obra de arte, y todo apunta a que ha sido robado. Este museo es el más grande del mundo y tiene obras de arte de todos los rincones, desde cuadros a estatuas.
 
-Diagrama de salas
+El encargado de recibir al jugador en el museo es su vigilante, un vetusto y campechano señor que ha pasado toda su vida trabajando en él. Este personaje será el encargado de introducir al jugador la historia y las mecánicas del juego, de explicarle su misión y de guiarle a través de las distintas salas, ayudándole para que no se quede atascado.
 
-aunque inicialmente se planteó hacer bifurcaciones en los caminos que llevan a las salas, de manera que el jugador pudiera elegir o incluso que tuviera que ir para atrás para acceder a alguna, finalmente se ha decidido hacer un museo lineal, principalmente porque se espera que sea mas facil para los jugadores, y porque tiene mas sentido en el contexto de la ambientación temporal de las salas que vayan una después de otra
+Pero cuál es la sorpresa del jugador cuando, tras completar todas las pruebas y llegar al final del museo, descubre que ha sido el propio vigilante quien ha robado el cuadro para su disfrute personal.
 
+\section{Mundo virtual}
 
-\subsection{Sala 0. Introducción}
+A continuación se describirán la estética y la composición del mundo virtual de este proyecto.
 
-\subsection{Sala 1. Tutorial}
+\subsection{Estética}
 
-\subsection{Sala 2. Gótico-flamenco}
+Como el presupuesto de este proyecto es nulo y el tiempo disponible para completarlo es especialmente bajo, la estética deberá ser acorde a estos factores. Por ello, se ha elegido una \textbf{estética low poly}, con lo que los tiempos de modelado se verán muy reducidos. Aún así, se intentará que no sea especialmente plana con la ayuda de texturas medianamente realistas que ayuden a los jugadores a conseguir una mayor inmersión y a dar mayor personalidad a las salas, pero todas ellas deberán ser gratuitas.
 
-\subsection{Sala 3. Renacimiento}
+Por otro lado, aunque el modelado de las salas deberá ser hecho manualmente, se podrán importar de internet modelos tridimensionales especialmente complejos, como las estatuas que se crean necesarias para las salas; estos modelos suelen ser digitalizaciones exactas, que se adaptarán para reducir el número de polígonos, reducir el peso total del juego y hacer que no sea necesario un equipo hardware potente para jugarlo.
 
-\subsection{Sala 4. Barroco}
+\subsection{Descripción de las salas}
 
-\subsection{Sala 5. Romanticismo}
+Cuando se habla de salas en este proyecto se refiere a las unidades que presentan una historia, una temática y un puzzle distinto a las demás. El museo estará compuesto por 7 salas, aparte de la de tutorial, y cada una de ellas hará referencia a un período artístico distinto y estará ambientada  decorada de manera coherente con él.
 
-\subsection{Sala 6. Vanguardias del siglo XX}
+Aunque inicialmente se planteó hacer bifurcaciones en los caminos que llevan a las salas de manera que el jugador pudiera elegir o incluso que tuviera que ir para atrás para acceder a alguna tras desbloquearla, finalmente se ha decidido hacer un museo lineal, principalmente porque se espera que sea más fácil para los jugadores, y porque tiene más sentido en el contexto de la ambientación temporal de las salas que vayan una después de otra.
 
-\subsection{Sala 7. Final del juego}
+El objetivo de cada nivel o sala será resolver el puzzle propuesto para acceder a la siguiente, además de que el usuario interactúe con las obras de arte y aprenda sobre ellas, ya que en alguno de los casos le será necesario.
 
+Como se ha indicado antes, en total habrá \textbf{8 salas}. La primera a la que accede el jugador será la del \textbf{tutorial}, que tendrá un puzzle especialmente fácil para que el jugador se pueda centrar en entender el concepto, las mecánicas y los controles del juego.
 
+Tras ella el jugador accederá a la sala corresponderá al período \textbf{gótico-flamenco}, el primero desde el que se ha decidido trabajar y estará ambientado en el interior de una iglesia gótica, con paredes de piedra altas y bóvedas de crucería. Además, tendrá tres cuadros; a los lados, \textit{El Matrimonio Arnolfini} (1434)  de Jan van Eycky \textit{El descendimiento} de van der Weyden (1436), a modo representativo del género, y en la pared del fondo \textit{El jardín de las delicias} de El Bosco (alrededor del 1500), que se abrirá por la mitad para mostrar la puerta al siguiente nivel
+
+La siguiente sala estará ambientada en el \textbf{renacimiento}, y tendrá ventanas amplias y frisos de marmol. Los cuadros de esta sala serán \textit{La última cena} de Leonardo da Vinci (alrededor de 1495), \textit{La escuela de atenas} de Rafael (1511) y \textit{La creación de Adán}, de Miguel Ángel Buonarroti (1511). Para ambientar la sala también se utilizarán esculturas 3D, como \textit{Piedad} o \textit{Moisés}, ambas de Miguel Ángel, ya modeladas y con licencias de uso libre.
+
+A continuación se encontrará la sala del \textbf{barroco}, con altas paredes de piedra. El concepto de esta sala ha cambiado varias veces a lo largo del desarrollo del proyecto, y por cuadros finalmente se han utilizado cuatro cuadros de San Sebastián, que fue un santo al que asetearon hasta la muerte y del que se hicieron muchas versiones a lo largo de este período. Los pintores elegidos han sido será de Guido Reni (1625),  José de Ribera (1636), Mattia Preti (1657) y Peter Paul Rubens (1614).
+
+La siguiente sala corresponderá al \textbf{Romanticismo}, por lo que se habrá poca iluminación y se utilizarán texturas de madera y un sistema de partículas de niebla para crear inmersividad. Los cuadros elegidos han sido \textbf{Fusilamiento de Torrijos y sus compañeros en las playas de Málaga} de Antonio Gisbert Pérez (1887) y \textit{Doña Juana la Loca} de Francisco Pradilla y Ortiz (1877) y \textit{El caminante sobre un mar de nubes} de Caspar David Friedrich (1818).
+
+La última sala estará ambientada en las \textbf{vanguardias del siglo XX}. Aunque en este período coexisten multitud de estilos distintos, se han elegido el \textbf{cubismo}, el \textbf{surrealismo} y el \textbf{postimpresionismo} como los más representativos, por lo que los cuadros utilizados para esta sala son, respectivamente, el \textit{Guernica} de Pablo Picasso (1937), \textit{La tentación de San Antonio} de Salvador Dalí (1946) y \textit{La noche estrellada} de Vincent van Gogh (1889).
+
+Cuando el jugador complete todas las salas podrá acceder a la \textbf{sala final}, en la que descubrirá que el vigilante que creía su amigo es en realidad el ladrón de guante blanco al que ha estado persiguiendo desde el principio.
