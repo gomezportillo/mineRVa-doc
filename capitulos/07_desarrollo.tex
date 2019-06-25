@@ -3,6 +3,10 @@
 
 \drop{C}{  omo} ya se ha comentado antes, el desarrollo de este proyecto ha supuesto un reto importante ya que las tecnologías utilizadas eran totalmente desconocidas. En este capítulo se explica el proceso seguido a lo largo de su desarrollo, además de presentar los principales problemas encontrados y las soluciones con las que se han abordado.
 
+Por otro lado, para cada entrega se incluirán los bocetos realizados para los modelos, además del modelo renderizado en Unity, y uno de los fragmentos de código desarrollado que se considere más interesante, además de los diagramas pertinentes que ayuden a entenderlo.
+
+Además, como algunos de los elementos desarrollados en una entrega sufrieron cambios en las siguientes, solo se explicará la versión final, por lo que puede que algo de lo explicado para una entrega no corresponda exactamente con lo enseñado en el vídeo de la misma.
+
 \section{Entrega 0}
 
 El objetivo de esta primera entrega fue, por un lado, establecer la estructura principal del proyecto y esbozar una primera versión del a narrativa y por otro realizar una primera toma de contacto con el desarrollo de Unity, las tecnologías \acs{VR} e instalar y configurar el entorno de desarrollo para poder empezar a trabajar en la siguiente entrega.
@@ -23,7 +27,7 @@ Antes de poder empezar a desarrollar el proyecto fue necesario elegir un \acs{ID
 
 \subsection{Primera toma de contacto con Unity}
 
-A continuación se presenta un resumen de la interfaz de Unity par que el lector pueda entender algunos de los conceptos de los que se hablará más adelante.
+A continuación se presenta un resumen de la interfaz de Unity para que el lector pueda entender algunos de los conceptos de los que se hablará más adelante.
 
 \begin{figure}[!h]
 \begin{center}
@@ -38,7 +42,7 @@ A continuación se presenta un resumen de la interfaz de Unity par que el lector
     
     \item Vista de la jerarquía de la escena, en la que pueden verse los objetos que hay y sus relaciones; por ejemplo, si están emparentados.
     
-    \item Vista del inspector en la que aparece la información, los materiales y los componentes de un objeto seleccionado. Un componente puede ser prácticamente cualquier cosa, como un script.
+    \item Vista del inspector en la que aparece la información de los componentes de un objeto seleccionado. Un componente puede ser prácticamente cualquier cosa desde un script a un material.
     
     \item Vista del proyecto, donde aparecen todas las carpetas disponibles.
     
@@ -69,41 +73,42 @@ Una vez terminados los bocetos, se modeló la primera sala en Blender se comenz�
 
 Actualmente, Blender cuenta con dos motores de renderizado; Blender Internal y Blender Cycles, y no son compatibles entre sí. Esto quiere decir que si por ejemplo creamos un material en Blender Internal y luego cambiamos a Cycles, éste no aparecerá. Aunque en teoría Unity trabaja mejor con los materiales de Blender Internal, al importarlos no aparecen como deberían y no pueden modificarse sus propiedades como su color, su \textit{metalicidad} o su mapa de normales, por lo que ha sido necesario rehacer todos los materiales de los modelos y volver a aplicarlos a mano.
 
-Vamos a tomar como ejemplo una de las paredes de ladrillos para ver el flujo de trabajo de los materiales; tras modelarla, habría que descargar una textura para ella, para lo que se ha utilizado el sitio web \url{https://3dtextures.me/} que proporciona texturas procedurales gratuitas y con mapas de normales y rugosidad con licencia libre. Una vez hecho, se crea un material en Blender al que se le aplica la textura para ver cómo quedaría, aunque Blender Internal no da la opción de añadir más mapas a la textura. Tras esto, se importa el modelo a Unity y se crea un nuevo material, con la misma textura, al que se le añaden y configuran el resto de mapas.
+Vamos a tomar como ejemplo una de las paredes de ladrillos para ver el flujo de trabajo de los materiales; tras modelarla, habría que descargar una textura para ella, para lo que se ha utilizado el sitio web \url{https://3dtextures.me/} que proporciona texturas procedurales gratuitas y con mapas de normales y rugosidad con licencia libre. Una vez hecho, se crea un material en Blender al que se le aplica la textura para ver cómo quedaría, aunque Blender Internal no da la opción de añadir más mapas a la textura. Tras esto, se importa el modelo desde Unity y se crea un nuevo material, con la misma textura, al que se le añaden y configuran el resto de mapas.
 
 La imagen \ref{fig:unity-sala-0} muestra el resultado final del modelado y la importación a Unity. Como el exterior con árboles, que puede verse a través de las ventanas, se reutiliza en otras salas se ha movido a una escena aparte que se importa cuando es necesario, recudiendo de este modo el peso de los modelos.
 
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-0.png}
-\caption{Sala 0 vista desde Unity}
+\caption{Sala 0 renderizada en Unity}
 \label{fig:unity-sala-0}
 \end{center}
 \end{figure}
 
-Tras ello se hizo lo mismo con la sala de tutorial, que puede verse en la figura \ref{fig:unity-sala-1}.
+Tras ello se hizo lo mismo con la sala de tutorial, que puede verse en la figura \ref{fig:unity-sala-1}. Para dar a entender al jugador que están relacionadas, se ha utilizado la misma textura de ladrillos para las paredes y el mismo techo de cristal, lo que ayuda a aumentar la claridad y dar una sensación de amplitud,
 
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-1.png}
-\caption{Sala 1 vista desde Unity}
+\caption{Sala 1 renderizada en Unity}
 \label{fig:unity-sala-1}
 \end{center}
 \end{figure}
 
-Además, aunque las cajas de colisiones automáticas de Unity funcionan bien para objetos no lo hacen para habitaciones, ya que estas cajas la rodean y no permiten detectar colisiones, por lo que ha sido necesario definir manualmente estas colisiones, para lo que se han utilizado los componentes \texttt{Box Collider} para cada una de la paredes, el techo y el suelo.
+Además, aunque las cajas de colisiones automáticas de Unity funcionan bien para objetos no lo hacen para habitaciones, ya que estas cajas la rodean y no permiten detectar colisiones interiores. Por ello, ha sido necesario definir manualmente estas colisiones, para lo que se han utilizado los componentes \texttt{Box Collider} para cada una de la paredes, el techo y el suelo. Estas cajas de colisiones definen los \textit{limites físicos} de los objetos e impiden que el jugador los atraviese.
 
 \subsection{Viajar entre salas}
 
-Una vez que las dos salas estaban modeladas se trabajó en hacer que el jugador pudiera viajar entre ellas; por lo que se escribió un script en C\# que permitía viajar al jugador a otra sala al tocar una puerta, 
+Una escena en Unity es una unidad que permite incluir en ella elementos que estén estrechamente relacionados desde el punto de vista del juego, como modelos o scripts. Desde la documentación de Unity se anima al desarrollador a encapsular cada nivel del juego en una escena; así, la equivalencia que se ha usado en este proyecto es de una sala por escena.
 
-Para ello, lo primero que se hizo fue añadir una caja de colisiones a la puerta y activar la opción \texttt{Is trigger}, lo que le añade un \textit{listener} para poder activar otras funciones cuando detecte colisiones. Tras ello, se le añadió un componente tipo script, que puede verse simplificado en el listado \ref{lst:viajar-salas} que usa la clase \texttt{SceneManager} para cambiar la escena cuando el jugador colisiona con ella1. En él se declaran dos variables públicas para poder definirlas desde el propio inspector de Unity más cómodamente, como puede verse en la figura \ref{fig:door-teleporter-inspector}, lo que añade flexibilidad y realización al código.
+Una vez que las dos salas estaban modeladas se trabajó en hacer que el jugador pudiera viajar entre ellas; para ello, se escribió un script en C\# que permite cambiar la escena actual a otra cuando el jugador toque una puerta 
+
+Para ello, lo primero que se hizo fue añadir una caja de colisiones sin físicas a la puerta, lo que permite añadir un \textit{listener} para detectar colisiones y poder activar otras funciones. Tras ello, se desarrolló y añadió un script como componente, que puede verse simplificado en el listado \ref{lst:viajar-salas}, que usa la clase \texttt{SceneManager} para cambiar la escena cuando el jugador colisiona con ella tras comprobar previamente que no se encuentra cargada. En él se declaran dos variables públicas para poder definirlas desde el propio inspector de Unity más cómodamente, como puede verse en la figura \ref{fig:door-teleporter-inspector}, lo que añade flexibilidad y reutilización al código. El script entero se encuentra en el archivo \texttt{DoorTeletransporter.cs}.
 
 \begin{lstlisting}[caption=Fragmento del script para viajar entre salas, label=lst:viajar-salas]
 public string scene_name;
 public float fadingTime = 10.0f;
-public bool IsExitDoor = false;
-    
+
 private void OnTriggerEnter(Collider other)
 {
     if (scene_name != "" && !SceneManager.GetSceneByName(scene_name).isLoaded)
@@ -121,15 +126,19 @@ private void OnTriggerEnter(Collider other)
 \end{center}
 \end{figure}
 
-Además, cada script puede implementar dos funciones, \texttt{Start()} y \texttt{Update()}, que se ejecutan automáticamente al inicio y en cada frame, respectivamente.
+Además, Unity utiliza la convención \textit{CamelCase} para nombrar sus variables, que es un estilo de escritura que se aplica a frases que omite los espacios y hace que cada palabra empiece en mayúsculas . Por ello, si la implementamos en nuestro código es capaz de reconocerlo y representar el nombre de las variables en el inspector correctamente.
+
+Por otro lado, cada script puede implementar dos funciones, \texttt{Start()} y \texttt{Update()}, que se ejecutan automáticamente al inicio de la escena y en cada frame, respectivamente. Este paradigma es totalmente distinto a la programación lineal, ya que es necesario realizar cualquier cambio de manera iterativa; por ejemplo, si queremos mover un objeto un metro durante un segundo, deberemos parametrizar las distancias y los tiempos para que esta posición se actualice, aproximadamente, sesenta veces cada segundo.
 
 \subsection{Interacción con objetos virtuales}
 
 Una vez modeladas las dos salas, se comenzó a trabajar en hacer que el jugador pudiera interactuar con los objetos virtuales. Al estar utilizando el framework \acs{VRTK} se han podido hacer uso de sus funciones para facilitar mucho el trabajo.
 
-Lo primero que se hizo, tras modelar las tres piezas de fruta (una manzana, un plátano y una pera) fue dotarlas de físicas, para lo que se utilizaron los componentes \texttt{Box Collider} y \texttt{Rididbody}. Tras ello se hizo que interactuaran con los mandos del jugador con ayuda de los componentes \texttt{VRTK\_Interactable\_Object}, \texttt{VRTK\_Child\_Of\_Controller}, \texttt{VRTK\_Interact\_-} \texttt{Haptics} y se hizo que apareciera un borde amarillo cuando su caja de colisión detectara el mando con ayuda del componente \texttt{VRTK\_Outline\_Object\_-} \texttt{Highlighter}. Tras ello, se utilizó una \textit{snap drop zone} o zona en la que poder colocar objetos, para lo que se adaptó uno de los proporcionados por el framework.
+Lo primero que se hizo, tras modelar las tres piezas de fruta (una manzana, un plátano y una pera) e importarlas a Unity fue dotarlas de físicas, para lo que se utilizaron los componentes \texttt{Box Collider} para definir sus límites y \texttt{Rididbody} para hacerlas responder a la gravedad. Tras ello se hizo que interactuaran con los mandos del jugador con ayuda de los componentes \texttt{VRTK\_Interactable\_Object}, \texttt{VRTK\_Child\_Of\_Controller}, \texttt{VRTK\_Interact\_Haptics} y se hizo que apareciera un borde amarillo cuando su caja de colisión detectara el mando con ayuda del componente \texttt{VRTK\_-} \texttt{Outline\_Object\_Highlighter}. Tras ello, se utilizó una \textit{snap drop zone} o zona en la que poder colocar objetos, para lo que se adaptó uno de los modelos proporcionados por el framework. Tras configurarlo adecuadamente, fue posible colocar sobre esta zona piezas de fruta y que estas automáticamente adquirieran la posición y rotación adecuadas.
 
-Como resultado de esta entrega se generó el primer entregable y, por tanto, se grabó un vídeo presentando el proyecto y enseñando los avances, que puede verse en el siguiente enlace,
+Lo que se explica a continuación no se hizo hasta dos entregas posteriores, pero se contará ahora por estar estrechamente relacionado con ello. Para evitar que el jugador saliese de la sala sin hacer caso al vigilante, se añadió un script a la \textit{snap drop zone} antes mencionada que detectara cuando el jugador dejaba un objeto con la etiqueta \texttt{Apple} para desbloquear la puerta. Por un lado, para conseguir detectar cuando el jugador colocaba objetos en la zona se añadió un \textit{listener} al evento \texttt{ObjectSnappedToDropZone}, emitido por el componente \texttt{VRTK\_SnapDropZone}, que permite saber programáticamente cuándo ocurre esto. Por otro, para desabilitar la puerta y evitar que el jugador viaje entre salas, se desabilita por defecto su caja de colisiones y solo se vuelve a activar cuando el jugador coloca la manzana en su sitio. Más adelante también se utilizaría este sistema para activar uno de los diálogos del vigilante que felicitase al jugador por haberlo hecho bien.
+
+Como resultado de esta entrega se generó el primer entregable y, por tanto, se grabó un vídeo presentando el proyecto y enseñando los avances, que puede verse en el siguiente enlace.
 
 \begin{center}
     \url{https://youtu.be/m7rvcdZuUMI}
@@ -138,13 +147,69 @@ Como resultado de esta entrega se generó el primer entregable y, por tanto, se 
 
 \section{Entrega 2}
 
+La segunda entrega del proyecto estuvo más centrada en el modelado de la sala del gótico que la primera. Tras diseñar el boceto de la misma, que puede verse en la figura \ref{fig:bocetos-sala-2}, se modeló el Blender. Al ser un modelo lleno de detalles y diseños y formas muy específicos, como los arcos o las ventanas, se tardó bastante en terminar. El resultado final puede verse en la figura \ref{fig:unity-sala-2}.
+
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=1\textwidth]{imagenes/7/bocetos/boceto-sala-2.png}
+\includegraphics[width=0.75\textwidth]{imagenes/7/bocetos/boceto-sala-2.png}
 \caption{Boceto de la segunda sala}
-\label{fig:bocetos-salas-2}
+\label{fig:bocetos-sala-2}
 \end{center}
 \end{figure}
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-2.png}
+\caption{Sala 2 renderizada en Unity}
+\label{fig:unity-sala-2}
+\end{center}
+\end{figure}
+
+Una vez se contaba con el modelo, se pasó a implementar la prueba. Para esta sala se decidió esconder una palanca tras uno de los cuadros laterales que, al activarla, abriera en dos el \textit{Jardín de las Delicias}. Para ello, una vez modelado el hueco en la pared con la palanca detrás del cuadro elegido, se utilizó el script del framework \acs{VRTK} \texttt{VRTK\_ArificialRotator} y se integró con un script propio para dotar de dicha funcionalidad tanto a la palanca como a la puerta. A continuación, en la figura \ref{fig:lever-controller-inspector} puede verse un fragmento de este último script desde el inspector de Unity y cómo contiene al primero. Además, también puede verse cómo se han asignado el resto de elementos mencionados para que pueda acceder a ellos y modificarlos.
+
+Por ejemplo, desde este script es posible definir el contenido del cuadro de texto que muestra si el cuadro está abierto o cerrado, su velocidad de apertura y la referencia a los dos lados del cuadro, que se utilizará para acceder a ellos y modificar su posición.
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{imagenes/7/lever-controller.png}
+\caption{Script para controlar la palanca desde el inspector}
+\label{fig:lever-controller-inspector}
+\end{center}
+\end{figure}
+
+A continuación, en el listado \ref{lst:lever-controller} se presenta simplificado el script utilizado para abrir y cerrar la puerta, que se puede ver completo en el archivo \texttt{LeverController.cs}. Coom puede verse, todo se realiza dentro del método \texttt{Update()}, actualizando en cada frame la posición de los elementos utilizando el método \texttt{Lerp}, que implementa una función de interpolación lineal.
+
+\begin{lstlisting}[caption=Fragmento del script para abrir y cerrar una puerta abatible con una palanca, label=lst:lever-controller]
+public Transform doorLeft;
+public Transform doorRight;
+public float openSpeed;
+
+private void Update()
+{
+    doorLeft.position = Vector3.Lerp(doorLeft.position,
+                                      leftPosition,
+                                      Time.deltaTime * openSpeed);
+    
+    doorRight.position = Vector3.Lerp(doorRight.position,
+                                       rightPosition,
+                                       Time.deltaTime * openSpeed);
+    
+
+}
+\end{lstlisting}
+
+Además, multiplicando la velocidad de apertura definida antes por el tiempo transcurrido desde el último frame ejecutado (obtenido con la función \texttt{Time.detaTime} podemos asegurar que el todos los ordenadores en los que se ejecute se abrirá a la misma velocidad, evitando así que el juego se ejecute más rápido en ordenadores más potentes.
+
+Por otro lado, para permitir al jugador abrir y cerrar el cuadro que esconde la palanca como si fuera ventana se ha utilizado el script \texttt{VRTK\_Physics\_-} \texttt{Rotator} al que, indicándole un vector que actúa como bisagra y el ángulo que soporta, además de otros parámetros, es capaz de rotar el objeto que lo contiene.
+
+Y por último, se comenzó a prototipar la siguiente sala, aunque como apenas se empezó en esta entrega su explicación se deja para la siguiente.
+
+Por tanto, como resultado de esta entrega se generó una versión del proyecto que contenía la antesala y las dos primeras salas funcionalmente terminadas y un prototipo con la estructura básica de la tercera. El vídeo que enseña los avances puede verse a continuación.
+
+\begin{center}
+    \url{https://youtu.be/kfEnxP5dHU4}
+\end{center}
+
 
 \section{Entrega 3}
 
@@ -186,3 +251,5 @@ Como resultado de esta entrega se generó el primer entregable y, por tanto, se 
 
 \section{Entrega 6}
 
+
+\section{Entrega 7}
