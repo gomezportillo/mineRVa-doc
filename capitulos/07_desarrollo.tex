@@ -3,9 +3,11 @@
 
 \drop{C}{  omo} ya se ha comentado antes, el desarrollo de este proyecto ha supuesto un reto importante ya que las tecnologías utilizadas eran totalmente desconocidas. En este capítulo se explica el proceso seguido a lo largo de su desarrollo, además de presentar los principales problemas encontrados y las soluciones con las que se han abordado.
 
-Por otro lado, para cada entrega se incluirán los bocetos realizados para los modelos, además del modelo renderizado en Unity, y uno de los fragmentos de código desarrollado que se considere más interesante, además de los diagramas pertinentes que ayuden a entenderlo.
+Para cada entrega se incluirán los bocetos realizados para los modelos, además del modelo renderizado en Unity, y uno de los fragmentos de código desarrollado que se considere más interesante, además de los diagramas pertinentes que ayuden a entenderlo.
 
 Además, como algunos de los elementos desarrollados en una entrega sufrieron cambios en las siguientes, solo se explicará la versión final, por lo que puede que algo de lo explicado para una entrega no corresponda exactamente con lo enseñado en el vídeo de la misma.
+
+Por otro lado, como la naturaleza de este proyecto hace que sea muy visual, pero tampoco se pretende llenar este capítulo de capturas de pantalla de cada elemento, se deja al lector el consultar estos vídeos para ver cada uno de los elementos en acción.
 
 \section{Entrega 0}
 
@@ -147,7 +149,7 @@ Como resultado de esta entrega se generó el primer entregable y, por tanto, se 
 
 \section{Entrega 2}
 
-La segunda entrega del proyecto estuvo más centrada en el modelado de la sala del gótico que la primera. Tras diseñar el boceto de la misma, que puede verse en la figura \ref{fig:bocetos-sala-2}, se modeló el Blender. Al ser un modelo lleno de detalles y diseños y formas muy específicos, como los arcos o las ventanas, se tardó bastante en terminar. El resultado final puede verse en la figura \ref{fig:unity-sala-2}.
+La segunda entrega del proyecto estuvo más centrada en el modelado que la primera, concretamente en la sala del gótico. Tras diseñar el boceto de la misma, que puede verse en la figura \ref{fig:bocetos-sala-2}, se modeló el Blender. Al ser un modelo lleno de detalles y diseños y formas muy específicos, como los arcos o las ventanas, se tardó bastante en terminar. El resultado final puede verse en la figura \ref{fig:unity-sala-2}.
 
 \begin{figure}[!h]
 \begin{center}
@@ -177,7 +179,7 @@ Por ejemplo, desde este script es posible definir el contenido del cuadro de tex
 \end{center}
 \end{figure}
 
-A continuación, en el listado \ref{lst:lever-controller} se presenta simplificado el script utilizado para abrir y cerrar la puerta, que se puede ver completo en el archivo \texttt{LeverController.cs}. Coom puede verse, todo se realiza dentro del método \texttt{Update()}, actualizando en cada frame la posición de los elementos utilizando el método \texttt{Lerp}, que implementa una función de interpolación lineal.
+A continuación, en el listado \ref{lst:lever-controller} se presenta simplificado el script utilizado para abrir y cerrar la puerta, que se puede ver completo en el archivo \texttt{LeverController.cs}. Coom puede verse, todo se realiza dentro del método \texttt{Update()}, actualizando en cada frame la posición de los elementos utilizando el método \texttt{Lerp} de la clase \texttt{Vector3}, que implementa una función de interpolación lineal que permite modificar un vector tridimensional.
 
 \begin{lstlisting}[caption=Fragmento del script para abrir y cerrar una puerta abatible con una palanca, label=lst:lever-controller]
 public Transform doorLeft;
@@ -202,6 +204,26 @@ Además, multiplicando la velocidad de apertura definida antes por el tiempo tra
 
 Por otro lado, para permitir al jugador abrir y cerrar el cuadro que esconde la palanca como si fuera ventana se ha utilizado el script \texttt{VRTK\_Physics\_-} \texttt{Rotator} al que, indicándole un vector que actúa como bisagra y el ángulo que soporta, además de otros parámetros, es capaz de rotar el objeto que lo contiene.
 
+Además, para evitar que el jugador tuviera que agacharse a recoger los objetos virtuales que caen al suelo (lo que puede ser peligroso, ya que con las gafas no se ve el mundo real y se puede llegar a chocar contra algún objeto), se diseñó un pequeño script que hace que cuando estos objetos chocan contra el suelo vuelvan a su posición original. Este script hace que cuando la caja de colisión de un objeto detecta un choque comprueba si es el suelo, y si sí cambia la posición de dicho objeto con la que tenía al cargar la escena, que previamente ha almacenado en una variable, automatizando la tarea.
+
+En el listado \ref{lst:object-teletransporter} puede verse el fragmento de este script que detecta las colisiones, cambiando la posición y la rotación del objeto para que coincida con su inicial. Además, también se resetean sus velocidades iniciales y angulares, ya que si no el objeto mantiene la velocidad y la aceleración que tenía mientras caía, lo que hacía que rebotaran contra las superficies y volvieran a caer cada vez más y más rápido.
+
+\begin{lstlisting}[caption=Fragmento del script para teletransportar un objeto si toca el suelo, label=lst:object-teletransporter]
+private void OnTriggerEnter(Collider other)
+{
+    if (other.tag == GroundTag && instance != null)
+    {
+        Rigidbody rb = instance.GetComponent<Rigidbody>();
+
+        instance.position = initialPosition;
+        instance.rotation = initialRotation;
+        rb.velocity = initialVelocity;
+        rb.angularVelocity = initialAngularVelocity;
+    }
+}
+\end{lstlisting}
+
+
 Y por último, se comenzó a prototipar la siguiente sala, aunque como apenas se empezó en esta entrega su explicación se deja para la siguiente.
 
 Por tanto, como resultado de esta entrega se generó una versión del proyecto que contenía la antesala y las dos primeras salas funcionalmente terminadas y un prototipo con la estructura básica de la tercera. El vídeo que enseña los avances puede verse a continuación.
@@ -210,22 +232,138 @@ Por tanto, como resultado de esta entrega se generó una versión del proyecto q
     \url{https://youtu.be/kfEnxP5dHU4}
 \end{center}
 
-
 \section{Entrega 3}
+
+A continuación se comenzó a trabajar en la tercera entrega. Como la anterior sala se terminó y se empezó a modelar la tercera, lo primero que se hizo fue terminar el modelo de la misma. En la figura \ref{fig:bocetos-sala-3} puede verse el boceto que se dibujó antes de comenzar a modelar para tener un punto de partida.
 
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=1\textwidth]{imagenes/7/bocetos/boceto-sala-3.png}
+\includegraphics[width=0.75\textwidth]{imagenes/7/bocetos/boceto-sala-3.png}
 \caption{Boceto de la tercera sala}
-\label{fig:bocetos-salas-3}
+\label{fig:bocetos-sala-3}
 \end{center}
 \end{figure}
+
+A continuación, en la figura \ref{fig:unity-sala-3} puede verse la sala ya terminada e importada desde Unity. Finalmente, la prueba de esta sala consiste en ayudar al vigilante a recoger restos que otros visitantes han dejado en el museo. En concreto son 4; una lata de refresco, una botella de cristal, una taza de café y una tela que tapa uno de los cuadros. Una vez que el jugador los ha depositado todos en la papelera que puede verse al fondo, la sala se desbloquea y puede continuar visitando el museo.
+
+Para hacer los elementos presentados anteriormente interactivos se utilizó un procedimiento similar a las piezas de fruta de la primera sala, utilizando la funcionalidad y las interfaces que provee el framework \acs{VRTK}. Por tanto, se omitirá su explicación y se pasará directamente a presentar el funcionamiento de la papelera.
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-3.png}
+\caption{Sala 3 renderizada en Unity}
+\label{fig:unity-sala-3}
+\end{center}
+\end{figure}
+
+Aunque inicialmente se intentaron varios enfoques para hacer funcionar esta papelera, como hacer que el jugador tuviera que depositar dentro los objetos, tras varias pruebas se vio que no siempre caían dentro, y como a estos objetos también se les añadió el script para que volvieran a su sitio al caer, el jugador tenía que volver a la posición de origen de nuevo a por ellos, lo que era bastante tedioso. Por ello, finalmente se consideró que simplemente con soltar los objetos cerca de la papelera, automáticamente se metieran dentro de ella y desaparecieran. Para ello se volvieron a utilizar las \textit{snap drop zones} de \acs{VRTK}. 
+
+Por tanto, se colocaron cuatro zonas concéntricas, una por cada objeto, y se configuraron de tal manera que al dejar un objeto dentro hacían que su tamaño se encogiese hasta ser prácticamente invisible, y luego lo eliminaban. Por otro lado, para detectar cuándo una de estas zonas detectaba un objeto, se utilizaron eventos de Unity. Estos eventos permiten suscribirse a ellos y resultar notificado cuando se activen. Así, las \textit{snap drop zones} ofrecen sus propios eventos; por tanto, una vez podemos acceder a las 4 zonas desde el código basta con utilizar el operador \texttt{+=} para suscribir un método que implemente la interfaz necesaria al evento de un objeto.
+
+En el listado \ref{lst:trash-detector} pueden verse simplificadas los fragmentos más relevantes de este script. La primera linea declara un vector público de \textit{snap drop zones}, lo que permite definir desde el inspector su tamaño y sus elementos. Posteriormente, cuando la escena comienza, se recorre este vector con un iterador \texttt{foreach} y se suscribe un método propio a los eventos de todas las zonas que anuncian que un objeto le ha sido agregado. Así, cada vez que una zona adquiera un objeto se llamará a la función de la línea 11, que comprobará si el objeto añadido corresponde con aquellos que nos interesan y podrá de este modo llevar un registro de cuántos elementos se han depositado en la papelera y cuándo desbloquear la puerta de salida. 
+
+\begin{lstlisting}[caption=Fragmento del script para detectar piezas de basura, label=lst:trash-detector]
+public VRTK_SnapDropZone[] snapDropZones;
+
+private readonly string TRASH_TAG = "Trash";
+
+private void Start()
+{
+    foreach (VRTK_SnapDropZone sdz in snapDropZones)
+    {
+        sdz.ObjectSnappedToDropZone += OnTrashSnapped;
+    }
+}
+
+internal void OnTrashSnapped(object sender, SnapDropZoneEventArgs e)
+{
+    if (e.snappedObject.tag == TRASH_TAG)
+    {
+        trashCounter++;
+    }
+}
+\end{lstlisting}
+
+En la imagen inferior, la figura \ref{fig:trash-detector}, puede verse el script desde el inspector de Unity y cómo es posible definir de manera flexible el tamaño y los elementos del vector para que puedan ser accedidos después desde el código. 
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{imagenes/7/trash-detector.png}
+\caption{Script para detectar piezas de basura desde el inspector}
+\label{fig:trash-detector}
+\end{center}
+\vspace{-0.25cm}
+\end{figure}
+
+
+Lo siguiente en lo que se trabajó fue en mostrar la descripción de los cuadros cuando el jugador pulsara un botón. Se dedicó bastante tiempo a pensar la solución más orgánica, desde poner al lado de cada una cuadro un pequeño marco con la descripción, como en los museos de verdad, a cambiar la textura del cuadro a un texto con su descripción, pero ninguna terminaba de ser cómoda para el jugador. Por lo tanto, finalmente se decidió superponer un cuadrado semitransparente delante de la cámara con la descripción del cuadro, que apareciese y desapareciese cuando se pulsara un botón. Además, esta solución permitía reutilizarse para el sistema de diálogos que se implementaría en un futuro, y por lo tanto ahorrando tiempo de desarrollo, por lo que se decidió elegirla. Este cuadro sigue siempre al jugador pero está desactivado por defecto, por lo que solo es visible cuando se activa.
+
+En la figura \ref{fig:camera-overlay} se muestra cómo funciona. Como puede verse, se define un cuadro delante de la cámara que copia su localización y rotación para seguirla aunque el jugador se mueva. De este modo siempre está a la misma distancia de la cámara. Además, se hicieron pruebas colocando el plano a distintas distancias y con distintos tamaños de letra hasta la que se considera que puede leerse mejor sin forzar la vista.
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.4\textwidth]{imagenes/7/camera-overlay.png}
+\caption{Cuadro de texto superpuesto al mundo}
+\label{fig:camera-overlay}
+\end{center}
+\end{figure}
+
+Además, Unity trabaja por defecto con letras rasterizadas; es decir, pueden verse muy fácilmente sus píxeles. Esto, aunque el texturas no es tan importante, hace que sea difícil leer texto, y más aún con unas gafas de realidad virtual. Por tanto, y tras investigar, se decidió utilizar la librería de Unity \textbf{TextMeshPro} que proporciona soporte para letras vectoriales, lo que hace que da igual a la distancia o el tamaño al que se rendericen que aparecerán extremadamente nítidas. Como único inconveniente, es necesario convertir las fuentes que se estén utilizando en el proyecto a su formato propio, aunque la propia librería proporciona una herramienta para poder hacerlo cómodamente.
+
+Por tanto, una vez que se disponía de letras legibles que seguían al jugador fue momento de hacer que el cuadro apareciera con la descripción de un cuadro (cargada desde un archivo de texto en disco) cuando el jugador estuviera cerca de él y pulsara un botón.
+
+Para ello, cada cuadro cuenta con un script, llamado \texttt{Painting-} \texttt{DescriptionManager.cs}, que utiliza una esfera de colisión para detectar cuándo se encuentra cerca el jugador y, cuando lo hace, activa un pequeño icono enfrente del jugador para que éste sepa que tiene disponible la descripción de un cuadro pulsando un botón.
+
+A continuación, cuando el jugador pulsa el botón el script se encarga de escribir su descripción, que previamente ha leído de disco, en el cuadro delante del jugador, y después lo vuelve visible para que pueda ser leído. Este cuadro vuelve a ser invisible tanto si el jugador deja de pulsar el botón como si se aleja del cuadro.
+
+Este script necesita la sala en la que se encuentra y el nombre del cuadro, para poder encontrar el directorio con el archivo que tiene que leer, las referencias a ambos mandos, para saber cuándo se pulsa y libera el botón correspondiente, y las referencias al cuadro, al icono de disponibilidad y al objeto TextMeshPro para poder escribir en él. De este modo se consigue que el jugador solo tenga un cuadro de texto, que es accedido por todos los cuadros y modificarlo.
+
+En el listado \ref{lst:painting-description} puede verse el fragmento de código de este script encargado de detectar si el jugador está cerca y activar el icono de disponibilidad y, si además pulsa el botón adecuado, activará el cuadro de texto y escribirá en él su descripción.
+
+\begin{lstlisting}[caption=Fragmento del script activar la descripción de los cuadros, label=lst:painting-description]
+private void OnTriggerEnter(Collider other)
+{
+    if (other.name.Contains(PLAYER_TAG))
+    {
+        playerIsNear = true;
+        availabilityIcon.SetActive(true);
+    }
+}
+    
+private void ControllerEvents_ButtonTwoPressed(object sender, ControllerInteractionEventArgs e)
+{
+    if (playerIsNear)
+    {
+        textObject.text = paintingDescription;
+        availabilityIcon.SetActive(false);
+        textBackground.SetActive(true);
+        PlaySoundEffect();
+    }
+}
+\end{lstlisting}
+
+Además, en las últimas líneas puede leerse cómo se llama al método encargado de reproducir un pequeño efecto de sonido, que sería desarrollado en una de las últimas entregas.
+
+Además, como otro de los objetivos de esta entrega era realizar un fundido a negro al cambiar de salas, se utilizó un plano negro colocado frente a la cámara de manera similar que el de la descripción de los cuadros, aunque más cerca. Este plano comienza la escena completamente opaco y ve reducido su opacidad gradualmente hasta ser completamente transparente, lo que da al jugador el efecto de un fundido desde negro. Como vuelve a ser necesario realizar la interpolación lineal de un parámetro entre dos valores a lo largo del tiempo, como en la entrega anterior, se utilizó la función estándar \texttt{Color.Lerp} para actualizar el color del plano.
+
+Para finalizar esta entrega, la última tarea que falta es desarrollar el prototipo de un sistema de interacción avanzado que se finalizaría y perfilaría en la siguiente entrega. La idea era implementar un sistema que permitiera al jugador disparar y aunque se valoraron varios tipos, como pistolas, finalmente se decidió que el más interactivo para el jugador, además de el que más cuadraba con las temáticas del museo, sería un arco.
+
+Para ello se utilizaron diversos componentes genéricos del framework \acs{VRTK}, además de otros desarrollados específicamente para arcos, como animaciones de tensado o un script que permitía apuntar y disparar. Además, el modelo del arco, que también provee la librería, se adaptó para coincidir con la estética del juego.
+
+Tras ello, se modeló un carcaj y una flecha y se utilizó el script \texttt{Arrow-} \texttt{Spawner.cs} para hacer que el jugador pudiera sacar flechas infinitamente del mismo. Finalmente, se desarrolló un script que permitía detectar las colisiones de las flechas con objetos.
+
+Por lo tanto, el resultado de esta entrega fue una versión del proyecto con todas las salas completas hasta el barroco, que sería la siguiente, y un prototipo funcional de un arco listo para ser utilizado. Además, el usuario puede consultar la descripción de los cuadros y hay un fundido a negro al cambiar de escena, aparte de otras características menores. En el vídeo que se presenta a continuación pueden verse estos avances.
+
+\begin{center}
+    \url{https://youtu.be/MLn0r248dUs}
+\end{center}
+
 
 \section{Entrega 4}
 
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=1\textwidth]{imagenes/7/bocetos/boceto-sala-4.png}
+\includegraphics[width=0.75\textwidth]{imagenes/7/bocetos/boceto-sala-4.png}
 \caption{Boceto de la cuarta sala}
 \label{fig:bocetos-salas-4}
 \end{center}
@@ -233,23 +371,72 @@ Por tanto, como resultado de esta entrega se generó una versión del proyecto q
 
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=1\textwidth]{imagenes/7/bocetos/boceto-sala-5.png}
+\includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-4.png}
+\caption{Sala 4 renderizada en Unity}
+\label{fig:unity-sala-4}
+\end{center}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{imagenes/7/bocetos/boceto-sala-5.png}
 \caption{Boceto de la quinta sala}
 \label{fig:bocetos-salas-5}
 \end{center}
 \end{figure}
 
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-5.png}
+\caption{Sala 5 renderizada en Unity}
+\label{fig:unity-sala-5}
+\end{center}
+\end{figure}
+
+\begin{center}
+    \url{https://youtu.be/w83YTZuz6tQ}
+\end{center}
+
+
 \section{Entrega 5}
 
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=1\textwidth]{imagenes/7/bocetos/boceto-sala-6.png}
+\includegraphics[width=0.75\textwidth]{imagenes/7/bocetos/boceto-sala-6.png}
 \caption{Boceto de la sexta sala}
 \label{fig:bocetos-salas-6}
 \end{center}
 \end{figure}
 
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-6.png}
+\caption{Sala 6 renderizada en Unity}
+\label{fig:unity-sala-6}
+\end{center}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-7.png}
+\caption{Sala 7 renderizada en Unity}
+\label{fig:unity-sala-7}
+\end{center}
+\end{figure}
+
+\begin{center}
+    \url{https://youtu.be/WDkoSrzh24o}
+\end{center}
+
 \section{Entrega 6}
 
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=1\textwidth]{imagenes/7/maquina-estados-dialogos.png}
+\caption{Máquina de diálogos del gestor de diálogos}
+\label{fig:dialogs-state-machine}
+\end{center}
+\end{figure}
 
 \section{Entrega 7}
+
