@@ -53,6 +53,7 @@ A continuación se presenta un resumen de la interfaz de Unity para que el lecto
     \item Consola de salida en la que aparece información del proyecto.
 \end{enumerate}
 
+
 \section{Entrega 1}
 
 Como se indicó en el capítulo \ref{chap:plan_entregas}, el objetivo final de las iteraciones de esta entrega fue aprender a importar modelos a Unity desde Blender y diseñar e implementar el tutorial del proyecto y que éste fuera completamente funcional. 
@@ -147,6 +148,7 @@ Como resultado de esta entrega se generó el primer entregable y, por tanto, se 
 \end{center}
 
 
+
 \section{Entrega 2}
 
 La segunda entrega del proyecto estuvo más centrada en el modelado que la primera, concretamente en la sala del gótico. Tras diseñar el boceto de la misma, que puede verse en la figura \ref{fig:bocetos-sala-2}, se modeló el Blender. Al ser un modelo lleno de detalles y diseños y formas muy específicos, como los arcos o las ventanas, se tardó bastante en terminar. El resultado final puede verse en la figura \ref{fig:unity-sala-2}.
@@ -231,6 +233,8 @@ Por tanto, como resultado de esta entrega se generó una versión del proyecto q
 \begin{center}
     \url{https://youtu.be/kfEnxP5dHU4}
 \end{center}
+
+
 
 \section{Entrega 3}
 
@@ -320,7 +324,7 @@ Este script necesita la sala en la que se encuentra y el nombre del cuadro, para
 
 En el listado \ref{lst:painting-description} puede verse el fragmento de código de este script encargado de detectar si el jugador está cerca y activar el icono de disponibilidad y, si además pulsa el botón adecuado, activará el cuadro de texto y escribirá en él su descripción.
 
-\begin{lstlisting}[caption=Fragmento del script activar la descripción de los cuadros, label=lst:painting-description]
+\begin{lstlisting}[caption=Fragmento del script para activar la descripción de los cuadros, label=lst:painting-description]
 private void OnTriggerEnter(Collider other)
 {
     if (other.name.Contains(PLAYER_TAG))
@@ -342,13 +346,13 @@ private void ControllerEvents_ButtonTwoPressed(object sender, ControllerInteract
 }
 \end{lstlisting}
 
-Además, en las últimas líneas puede leerse cómo se llama al método encargado de reproducir un pequeño efecto de sonido, que sería desarrollado en una de las últimas entregas.
+Además, en las últimas líneas puede leerse cómo se llama al método encargado de reproducir un pequeño efecto de sonido, que sería implementado en una de las últimas entregas.
 
-Además, como otro de los objetivos de esta entrega era realizar un fundido a negro al cambiar de salas, se utilizó un plano negro colocado frente a la cámara de manera similar que el de la descripción de los cuadros, aunque más cerca. Este plano comienza la escena completamente opaco y ve reducido su opacidad gradualmente hasta ser completamente transparente, lo que da al jugador el efecto de un fundido desde negro. Como vuelve a ser necesario realizar la interpolación lineal de un parámetro entre dos valores a lo largo del tiempo, como en la entrega anterior, se utilizó la función estándar \texttt{Color.Lerp} para actualizar el color del plano.
+Además, como otro de los objetivos de esta entrega era realizar un fundido a negro al cambiar de salas, se utilizó un plano negro colocado frente a la cámara de manera similar que el de la descripción de los cuadros, aunque más cerca. Este plano comienza la escena completamente opaco y ve reducido su opacidad gradualmente hasta ser completamente transparente, lo que da al jugador el efecto de un fundido desde negro. Como vuelve a ser necesario realizar la interpolación lineal de un parámetro entre dos valores a lo largo del tiempo, como en la entrega anterior, se utilizó la función \texttt{Lerp} de la clase \texttt{Color} para actualizar el color del plano.
 
 Para finalizar esta entrega, la última tarea que falta es desarrollar el prototipo de un sistema de interacción avanzado que se finalizaría y perfilaría en la siguiente entrega. La idea era implementar un sistema que permitiera al jugador disparar y aunque se valoraron varios tipos, como pistolas, finalmente se decidió que el más interactivo para el jugador, además de el que más cuadraba con las temáticas del museo, sería un arco.
 
-Para ello se utilizaron diversos componentes genéricos del framework \acs{VRTK}, además de otros desarrollados específicamente para arcos, como animaciones de tensado o un script que permitía apuntar y disparar. Además, el modelo del arco, que también provee la librería, se adaptó para coincidir con la estética del juego.
+Para ello se utilizaron diversos componentes genéricos del framework \acs{VRTK}, además de otros desarrollados específicamente para arcos, como animaciones de tensado o un script que permitía apuntar, \texttt{BowAim.cs}. Además, el modelo del arco, que también provee la librería, se adaptó para coincidir con la estética del juego.
 
 Tras ello, se modeló un carcaj y una flecha y se utilizó el script \texttt{Arrow-} \texttt{Spawner.cs} para hacer que el jugador pudiera sacar flechas infinitamente del mismo. Finalmente, se desarrolló un script que permitía detectar las colisiones de las flechas con objetos.
 
@@ -359,15 +363,30 @@ Por lo tanto, el resultado de esta entrega fue una versión del proyecto con tod
 \end{center}
 
 
+
 \section{Entrega 4}
+
+Una vez que se disponía del prototipo funcional de un arco capaz de disparar flechas, se comenzó a modelar la siguiente sala cuyo boceto, dibujado antes de comenzar para disponer de un punto de partida, puede verse en la figura \ref{fig:boceto-sala-4}
 
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=0.75\textwidth]{imagenes/7/bocetos/boceto-sala-4.png}
 \caption{Boceto de la cuarta sala}
-\label{fig:bocetos-salas-4}
+\label{fig:boceto-sala-4}
 \end{center}
 \end{figure}
+
+En este boceto se propuso colocar una mesa en el centro con el arco y el carcaj encima. De este modo, sería fácil para el jugador visualizar todos los objetivos que hubiera en la sala y dispararles. Además, también pueden verse grandes ventanas que permiten que entre más luz. Aunque en el boceto no se ve, porque aún no se tenía claro, finalmente el techo también fue abierto, como puede verse en el la figura \ref{fig:unity-sala-4}.
+
+Por otr olado, al comienzo del modelado de esta sala se empezó a ver que el espacio dedicado a las texturas era cada vez más y más grande. Inicialmente, para cada textura de Unity se utilizaban todos los mapas descargados, y la mayoría de ellos llegaba a una resolución de 4K, llegando a pesar cada uno varios megas, cuando no era necesaria para nada tanta resolución. Por ello, y tras comprobar que se veían bien, se decidió reducir todas las texturas a 1024\texttt{x}1024 píxeles y trabajar para cada textura únicamente con 3 mapas diferentes, que han sigo los siguientes.
+
+\begin{itemize}
+    \item Un mapa de color, que sería la textura propiamente dicha. En Unity, este mapa se llama \textbf{albedo}, que en física es el porcentaje de radiación que refleja una superficie respecto a la que incide sobre ella.
+    \item Un mapa de normales, que proporciona relieve al modelo y ayuda a evitar que se vea plano, dándole realismo.
+    \item Un mapa de oclusión, que define cómo reflejará la luz cada parte del modelo. Eso se vuelve especialmente útil en texturas con varios materiales (como metal y ladrillo), haciendo que no se vean iguales.
+\end{itemize}
+
+Por ello, se decidió repetir la textura del suelo de la primera sala en esta, de nuevo, al comprobar que casaba relativamente bien con el color de las paredes. La versión final de esta sala, con los cuadros colocados, puede verse en la figura \ref{fig:unity-sala-4}.
 
 \begin{figure}[!h]
 \begin{center}
@@ -377,13 +396,108 @@ Por lo tanto, el resultado de esta entrega fue una versión del proyecto con tod
 \end{center}
 \end{figure}
 
+Tras esto, se importó el arco desde la escena de prueba hasta la definitiva y se comenzó a trabajar en un sistema capaz de informar al usuario a qué cuadro debe disparar de manera orgánica y detectar sus disparos. Finalmente se ha implementado un sistema que hace brillar parpadeando el borde del cuadro que el jugador tiene que disparar y lo ilumina en verde cuando acierta con una flecha para luego volver a su color original. Finalmente, cuando todos los cuadros han sido acertados las veces necesarias y el juego ha terminado, todos comienzan a parpadear con luz amarilla durante unos segundos y luego vuelven a la normalidad.
+
+Para dividir el trabajo entre varios scripts, se ha diseñado el siguiente sistema. Por un lado, cada cuadro tiene un script, \texttt{PaintingCollider-} \texttt{Detector.cs}, que le permite definir todos los parámetros necesarios para cada cuadro, como el material al que tienen que cambiar, el tiempo de fundido, si están activos o no... que se comunican con un gestor global, \texttt{ArrowGameManager.cs}, que elije qué cuadro será objetivo, y al que informan cuando un cuadro activo se acierta para que pueda llevar la cuenta de la puntuación, y finalmente activar la luz de victoria en todos los cuadros y desbloquear la puerta. En entregas futuras este script también activaría determinados diálogos del vigilante. Además, para evitar que los cuadros estuvieran brillando cuando el jugador entrara a la sala y antes de haber tenido tiempo de hablar con el vigilante para que le explique el juego, se ha hecho que el gestor del juego sea notificado cuando toque el jugador toque el arco para empezar, lo que se ha conseguido con el script \texttt{BowInformer.cs}, que utiliza una esfera de colisión en el mango para saber cuándo lo toca el jugador. Además, el arco también contiene el script para teletransportarse de vuelta a la mesa si toca el suelo.
+
+A continuación, la figura \ref{fig:sequence-diagram-bow} presenta un diagrama de secuencia que intenta presentar de un modo más visual lo que se ha explicado anteriormente. Aunque en Unity la vida de un objeto es más amplia, ya que se inician cuando la escena comienza y se destruyen cuando acaba, se ha adaptado para representar mejor cuándo interviene cada clase.
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=1\textwidth]{imagenes/7/bow-sequence-diagram.png}
+\caption{Diagrama de secuencia del juego del arco}
+\label{fig:sequence-diagram-bow}
+\end{center}
+\end{figure}
+
+Para gestionar el estado de un cuadro, que puede ser \textit{Disabled}, \texttt{Enabled}, \textit{FadingToDisabled} y \textit{Winning}, se ha utilizado un \texttt{switch} en su método \texttt{Update()} que comprueba en cada frame su estado y actúa en consecuencia. Para cambiar su material, de nuevo, se ha utilizado la función \texttt{Lerp} de interpolación lineal. 
+En el listado \ref{lst:painting-collider} puede verse cómo funciona el \texttt{switch} mencionado anteriormente, cambiando su comportamiento dependiendo del estado, que actualiza el gestor del juego, y cómo se informa al gestor del juego cuando una flecha colisiona con un cuadro cuando éste está activo.
+
+\newpage
+
+\begin{lstlisting}[caption=Fragmento del script para actualizar un cuadro, label=lst:painting-collider]
+private void Update()
+{
+    switch (state)
+    {
+        case PaintingState.Disabled:
+            break;
+        
+        case PaintingState.Enabled:
+            pingpong = Mathf.PingPong(Time.time, 
+                                      FadingInDuration);
+            fadingLerp =  pingpong / FadingInDuration;
+            GetComponent<Renderer>().materials[1].Lerp(
+                                        LightMaterial,
+                                        FrameMaterial,
+                                        fadingLerp);
+            break;
+    
+        case PaintingState.Winning:
+            ...
+    }
+}
+
+private void OnTriggerEnter(Collider other)
+{
+    if (state != PaintingState.Disabled && 
+        other.tag == ARROW_TAG)
+    {
+        gameManagerScript.
+            AnnounceDetectedArrow(this.name);
+    }
+}
+\end{lstlisting}
+
+Como puede verse, al colisionar con una flecha se anuncia al gestor del juego lo ocurrido, ya que éste es el encargado de controlar lo ocurrido. En el listado \ref{lst:painting-manager} puede verse este método y cómo comprueba cuántos cuadros se han acertado y si quedan más. De ser así, elige un cuadro aleatoriamente (que no puede ser el mismo) y se lo hace saber; por el contrario, si el juego ha terminado lo anuncia a todos los cuadros para que ellos lo gestionen y parpadeen en amarillo durante unos instantes.
+
+\begin{lstlisting}[caption=Fragmento del script para gestionar el juego del arco, label=lst:painting-manager]
+public void AnnounceDetectedArrow(string painting_name)
+{
+    painting_scripts[currentIndex].Disable();
+    successfulShots++;
+
+    if (successfulShots >= MaxShoots)
+    {
+        foreach (PaintingColliderDetector pcd in painting_scripts)
+        {
+            pcd.Win();
+        }
+    }
+    else
+    {
+        currentIndex = GenerateNewIndex();
+        painting_scripts[currentIndex].Enable();
+    }
+}
+\end{lstlisting}
+
+
+Por otro lado, al empezar a probar el proyecto con jugadores reales se vio que no había ningún tipo de retroalimentación en el momento en el que la puerta se desbloqueaba, es decir, el jugador no sabía cuando podía pasar a la siguiente sala ni qué puertas estaban bloqueadas. Por ello, se colocó la imagen de un candado delante de las puertas bloqueadas que, gestionado por el propio script que activa y desactiva el teletransporte, es visible cuando el jugador no puede utilizarla y es deshabilitado y desaparece cuando la puerta es usable.
+
+Por último, antes de pasar a la siguiente entrega, se comenzó a trabajar en la siguiente sala, la quinta, ambientada en el romanticismo. Como tal, se intentó dar un aspecto místico utilizando poca luz y un sistema de partículas de niebla, aunque éste no fue implementado hasta la siguiente entrega.
+
+Como tanto la cuarta sala, con el arco y las flechas, como la sexta, que previsiblemente implementaría un juego de piezas de cuadros en forma de puzzle, se consideraban bastante activas, se decidió diseñar la quinta para que fuera más tranquila y el jugador pudiera relajarse. Por tanto, se pensó en esconder la llave para desbloquear la puerta de salida en los cajones de un mueble y colocar varios cuadros con pistas escondidas que llevaran al jugador hasta la llave, obligándole así a examinarlos con detalle.
+
+Así, el boceto generado para esta sala puede verse en la figura \ref{fig:boceto-sala-5}, que contiene el mueble con los cajones (y un par de sillas para no hacerlo tan evidente), una alfombra que finalmente se eliminó y unas gruesas cortinas que tapan la luz del exterior.
+
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=0.75\textwidth]{imagenes/7/bocetos/boceto-sala-5.png}
 \caption{Boceto de la quinta sala}
-\label{fig:bocetos-salas-5}
+\label{fig:boceto-sala-5}
 \end{center}
 \end{figure}
+
+Pero apenas se comenzó a modelarla cuando llegó la fecha de finalización de la entrega, por lo que se terminó de trabajar en la misma y se grabó el vídeo mostrando el resultado hasta la fecha, que incluía las cuatro primeras salas terminadas y pequeños añadidos como los candados de las puertas o el fundido a negro entre salas. Dicho vídeo puede verse a continuación.
+
+\begin{center}
+    \url{https://youtu.be/w83YTZuz6tQ}
+\end{center}
+
+
+
+\section{Entrega 5}
 
 \begin{figure}[!h]
 \begin{center}
@@ -393,18 +507,12 @@ Por lo tanto, el resultado de esta entrega fue una versión del proyecto con tod
 \end{center}
 \end{figure}
 
-\begin{center}
-    \url{https://youtu.be/w83YTZuz6tQ}
-\end{center}
-
-
-\section{Entrega 5}
 
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=0.75\textwidth]{imagenes/7/bocetos/boceto-sala-6.png}
 \caption{Boceto de la sexta sala}
-\label{fig:bocetos-salas-6}
+\label{fig:boceto-sala-6}
 \end{center}
 \end{figure}
 
@@ -416,6 +524,15 @@ Por lo tanto, el resultado de esta entrega fue una versión del proyecto con tod
 \end{center}
 \end{figure}
 
+
+\begin{center}
+    \url{https://youtu.be/WDkoSrzh24o}
+\end{center}
+
+
+
+\section{Entrega 6}
+
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-7.png}
@@ -424,11 +541,14 @@ Por lo tanto, el resultado de esta entrega fue una versión del proyecto con tod
 \end{center}
 \end{figure}
 
+\begin{figure}[!h]
 \begin{center}
-    \url{https://youtu.be/WDkoSrzh24o}
+\includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-8.png}
+\caption{Sala 8 renderizada en Unity}
+\label{fig:unity-sala-8}
 \end{center}
+\end{figure}
 
-\section{Entrega 6}
 
 \begin{figure}[!h]
 \begin{center}
