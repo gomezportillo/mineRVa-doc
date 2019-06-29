@@ -7,6 +7,8 @@ Para cada entrega se incluirán los bocetos realizados para los modelos, además
 
 Además, como algunos de los elementos desarrollados en una entrega sufrieron cambios en las siguientes, solo se explicará la versión final, por lo que puede que algo de lo explicado para una entrega no corresponda exactamente con lo enseñado en el vídeo de la misma.
 
+Aunque algunas de las tareas de modelados de las salas han sido bastante complejas, como este trabajo no pretende centrarse en ellas la mayoría se obviarán y en su lugar se hablará de tareas más técnicas relacionadas con el diseño y la programación del código.
+
 Por otro lado, como la naturaleza de este proyecto hace que sea muy visual, pero tampoco se pretende llenar este capítulo de capturas de pantalla de cada elemento, se deja al lector el consultar estos vídeos para ver cada uno de los elementos en acción.
 
 \section{Entrega 0}
@@ -22,10 +24,6 @@ Este documento comienza a detallar la narrativa del juego y la integra en una vi
 A lo largo de este documento se intenta crear una historia interesante para el jugador al mismo tiempo que generar un museo ficticio pero realista y coherente en el que se pueda desarrollar dicha narrativa. Para ello, se ha seguido el orden cronológico por las épocas más importantes en la historial de arte, definiendo una sala con una historia diferente para cada una.
 
 A la hora de elegir los cuadros que se mostrarían en las salas se intentó buscar aquellos más representativos de su época. Para ello, se contó con el asesoramiento de una historiadora del arte, que ha sido quien ha dado el visto bueno al rigor artístico del museo y sus salas.
-
-\subsection{Configuración del entorno de desarrollo}
-
-Antes de poder empezar a desarrollar el proyecto fue necesario elegir un \acs{IDE} y un framework con el que trabajar. Como ya se ha explicado en los capítulos \ref{chap:estado_arte} y \ref{chap:tecnologia}, tras comparar las ventajas y desventajas de los entornos de desarrollo y librerías disponibles en el mercado se decidió trabajar con Unity, el framework \acs{VRTK} y la librería SteamVR para lo que, tras instalarlas, hubo que importarlas manualmente al proyecto de Unity.
 
 \subsection{Primera toma de contacto con Unity}
 
@@ -53,6 +51,21 @@ A continuación se presenta un resumen de la interfaz de Unity para que el lecto
     \item Consola de salida en la que aparece información del proyecto.
 \end{enumerate}
 
+\subsection{Configuración del entorno de desarrollo}
+
+Antes de poder empezar a desarrollar el proyecto fue necesario elegir un \acs{IDE} y un framework con el que trabajar. Como ya se ha explicado en los capítulos \ref{chap:estado_arte} y \ref{chap:tecnologia}, tras comparar las ventajas y desventajas de los entornos de desarrollo y librerías disponibles en el mercado se decidió trabajar con Unity, el framework \acs{VRTK} y la librería SteamVR para lo que, tras instalarlas, hubo que importarlas manualmente al proyecto de Unity.
+
+La principal motivación de usar este framework es toda la configuración por defecto que trae; de no haber utilizado estas librerías, hubiera sido necesario implementar de 0 un sistema de Realidad Virtual interactivo, lo que hubiera sido un \acs{TFM} por si mismo. En cambio, ha sido posible importar directamente y con relativa poca configuración un sistema funcional preparado para trabajar con él.
+
+Por otro lado, en lo que respecta al movimiento y desplazamiento del usuario, se presentaron dos vertientes.
+
+\begin{itemize}
+    \item Utilizar el \textbf{joystick} de los mandos para moverse, como si de un juego clásico se tratara. El problema de este enfoque es que genera \textbf{mareos} en los jugadores, ya que cuando los ojos detectan un movimiento que el sistema de equilibro no se genera una sensación muy incómoda que obliga al jugador a parar inmediatamente de jugar. En mi caso, por ejemplo, intenté jugar al \textit{Pavlov VR}, un juego que implementa este modelo, y apenas pude jugar tres minutos antes de tener que parar y tumbarme.
+    
+    \item En contraposición, el modelo que están implementando la mayoría de juegos \acs{VR} es de \textbf{lanzar} a los jugadores, quienes utilizan el joystick para apuntar al sitio donde quieren moverse, como si de una catapulta se tratase, y se teletransportan al lugar indicado, evitando por completo los mareos. 
+\end{itemize}
+
+Por tanto, se ha elegido el segundo modelo para utlizar en este juego.
 
 \section{Entrega 1}
 
@@ -137,7 +150,7 @@ Por otro lado, cada script puede implementar dos funciones, \texttt{Start()} y \
 
 Una vez modeladas las dos salas, se comenzó a trabajar en hacer que el jugador pudiera interactuar con los objetos virtuales. Al estar utilizando el framework \acs{VRTK} se han podido hacer uso de sus funciones para facilitar mucho el trabajo.
 
-Lo primero que se hizo, tras modelar las tres piezas de fruta (una manzana, un plátano y una pera) e importarlas a Unity fue dotarlas de físicas, para lo que se utilizaron los componentes \texttt{Box Collider} para definir sus límites y \texttt{Rididbody} para hacerlas responder a la gravedad. Tras ello se hizo que interactuaran con los mandos del jugador con ayuda de los componentes \texttt{VRTK\_Interactable\_Object}, \texttt{VRTK\_Child\_Of\_Controller}, \texttt{VRTK\_Interact\_Haptics} y se hizo que apareciera un borde amarillo cuando su caja de colisión detectara el mando con ayuda del componente \texttt{VRTK\_-} \texttt{Outline\_Object\_Highlighter}. Tras ello, se utilizó una \textit{snap drop zone} o zona en la que poder colocar objetos, para lo que se adaptó uno de los modelos proporcionados por el framework. Tras configurarlo adecuadamente, fue posible colocar sobre esta zona piezas de fruta y que estas automáticamente adquirieran la posición y rotación adecuadas.
+Lo primero que se hizo, tras modelar las tres piezas de fruta (una manzana, un plátano y una pera) e importarlas a Unity fue dotarlas de físicas, para lo que se utilizaron los componentes \texttt{Box Collider} para definir sus límites y \texttt{Rigidbody} para hacerlas responder a la gravedad. Tras ello se hizo que interactuaran con los mandos del jugador con ayuda de los componentes \texttt{VRTK\_Interactable\_Object}, \texttt{VRTK\_Child\_Of\_Controller}, \texttt{VRTK\_Interact\_Haptics} y se hizo que apareciera un borde amarillo cuando su caja de colisión detectara el mando con ayuda del componente \texttt{VRTK\_-} \texttt{Outline\_Object\_Highlighter}. Tras ello, se utilizó una \textit{snap drop zone} o zona en la que poder colocar objetos, para lo que se adaptó uno de los modelos proporcionados por el framework. Tras configurarlo adecuadamente, fue posible colocar sobre esta zona piezas de fruta y que estas automáticamente adquirieran la posición y rotación adecuadas.
 
 Lo que se explica a continuación no se hizo hasta dos entregas posteriores, pero se contará ahora por estar estrechamente relacionado con ello. Para evitar que el jugador saliese de la sala sin hacer caso al vigilante, se añadió un script a la \textit{snap drop zone} antes mencionada que detectara cuando el jugador dejaba un objeto con la etiqueta \texttt{Apple} para desbloquear la puerta. Por un lado, para conseguir detectar cuando el jugador colocaba objetos en la zona se añadió un \textit{listener} al evento \texttt{ObjectSnappedToDropZone}, emitido por el componente \texttt{VRTK\_SnapDropZone}, que permite saber programáticamente cuándo ocurre esto. Por otro, para desabilitar la puerta y evitar que el jugador viaje entre salas, se desabilita por defecto su caja de colisiones y solo se vuelve a activar cuando el jugador coloca la manzana en su sitio. Más adelante también se utilizaría este sistema para activar uno de los diálogos del vigilante que felicitase al jugador por haberlo hecho bien.
 
@@ -169,6 +182,8 @@ La segunda entrega del proyecto estuvo más centrada en el modelado que la prime
 \end{center}
 \end{figure}
 
+\subsection{Activación de una palanca virtual}
+
 Una vez se contaba con el modelo, se pasó a implementar la prueba. Para esta sala se decidió esconder una palanca tras uno de los cuadros laterales que, al activarla, abriera en dos el \textit{Jardín de las Delicias}. Para ello, una vez modelado el hueco en la pared con la palanca detrás del cuadro elegido, se utilizó el script del framework \acs{VRTK} \texttt{VRTK\_ArificialRotator} y se integró con un script propio para dotar de dicha funcionalidad tanto a la palanca como a la puerta. A continuación, en la figura \ref{fig:lever-controller-inspector} puede verse un fragmento de este último script desde el inspector de Unity y cómo contiene al primero. Además, también puede verse cómo se han asignado el resto de elementos mencionados para que pueda acceder a ellos y modificarlos.
 
 Por ejemplo, desde este script es posible definir el contenido del cuadro de texto que muestra si el cuadro está abierto o cerrado, su velocidad de apertura y la referencia a los dos lados del cuadro, que se utilizará para acceder a ellos y modificar su posición.
@@ -181,7 +196,7 @@ Por ejemplo, desde este script es posible definir el contenido del cuadro de tex
 \end{center}
 \end{figure}
 
-A continuación, en el listado \ref{lst:lever-controller} se presenta simplificado el script utilizado para abrir y cerrar la puerta, que se puede ver completo en el archivo \texttt{LeverController.cs}. Coom puede verse, todo se realiza dentro del método \texttt{Update()}, actualizando en cada frame la posición de los elementos utilizando el método \texttt{Lerp} de la clase \texttt{Vector3}, que implementa una función de interpolación lineal que permite modificar un vector tridimensional.
+A continuación, en el listado \ref{lst:lever-controller} se presenta simplificado el script utilizado para abrir y cerrar la puerta, que se puede ver completo en el archivo \texttt{LeverController.cs}. Como puede verse, todo se realiza dentro del método \texttt{Update()}, actualizando en cada frame la posición de los elementos utilizando el método \texttt{Lerp} de la clase \texttt{Vector3}, que implementa una función de interpolación lineal que permite modificar un vector tridimensional.
 
 \begin{lstlisting}[caption=Fragmento del script para abrir y cerrar una puerta abatible con una palanca, label=lst:lever-controller]
 public Transform doorLeft;
@@ -202,11 +217,13 @@ private void Update()
 }
 \end{lstlisting}
 
-Además, multiplicando la velocidad de apertura definida antes por el tiempo transcurrido desde el último frame ejecutado (obtenido con la función \texttt{Time.detaTime} podemos asegurar que el todos los ordenadores en los que se ejecute se abrirá a la misma velocidad, evitando así que el juego se ejecute más rápido en ordenadores más potentes.
+Además, multiplicando la velocidad de apertura por el tiempo transcurrido desde el último frame ejecutado (obtenido con la función \texttt{Time.detaTime}) podemos asegurar que el todos los ordenadores en los que se ejecute se abrirá a la misma velocidad, evitando así que el juego se ejecute más rápido en ordenadores más potentes.
 
 Por otro lado, para permitir al jugador abrir y cerrar el cuadro que esconde la palanca como si fuera ventana se ha utilizado el script \texttt{VRTK\_Physics\_-} \texttt{Rotator} al que, indicándole un vector que actúa como bisagra y el ángulo que soporta, además de otros parámetros, es capaz de rotar el objeto que lo contiene.
 
-Además, para evitar que el jugador tuviera que agacharse a recoger los objetos virtuales que caen al suelo (lo que puede ser peligroso, ya que con las gafas no se ve el mundo real y se puede llegar a chocar contra algún objeto), se diseñó un pequeño script que hace que cuando estos objetos chocan contra el suelo vuelvan a su posición original. Este script hace que cuando la caja de colisión de un objeto detecta un choque comprueba si es el suelo, y si sí cambia la posición de dicho objeto con la que tenía al cargar la escena, que previamente ha almacenado en una variable, automatizando la tarea.
+\subsection{Teletransportar los objetos que toquen el suelo}
+
+Para evitar que el jugador tuviera que agacharse a recoger los objetos virtuales que caen al suelo (lo que puede ser peligroso, ya que con las gafas no se ve el mundo real y se puede llegar a chocar contra algún objeto), se diseñó un pequeño script que hace que cuando estos objetos chocan contra el suelo vuelvan a su posición original. Este script hace que cuando la caja de colisión de un objeto detecta un choque comprueba si es el suelo, y si sí cambia la posición de dicho objeto con la que tenía al cargar la escena, que previamente ha almacenado en una variable, automatizando la tarea.
 
 En el listado \ref{lst:object-teletransporter} puede verse el fragmento de este script que detecta las colisiones, cambiando la posición y la rotación del objeto para que coincida con su inicial. Además, también se resetean sus velocidades iniciales y angulares, ya que si no el objeto mantiene la velocidad y la aceleración que tenía mientras caía, lo que hacía que rebotaran contra las superficies y volvieran a caer cada vez más y más rápido.
 
@@ -248,7 +265,9 @@ A continuación se comenzó a trabajar en la tercera entrega. Como la anterior s
 \end{center}
 \end{figure}
 
-A continuación, en la figura \ref{fig:unity-sala-3} puede verse la sala ya terminada e importada desde Unity. Finalmente, la prueba de esta sala consiste en ayudar al vigilante a recoger restos que otros visitantes han dejado en el museo. En concreto son 4; una lata de refresco, una botella de cristal, una taza de café y una tela que tapa uno de los cuadros. Una vez que el jugador los ha depositado todos en la papelera que puede verse al fondo, la sala se desbloquea y puede continuar visitando el museo.
+Más adelante, en la figura \ref{fig:unity-sala-3} puede verse la sala ya terminada e importada desde Unity. Finalmente, la prueba de esta sala consiste en ayudar al vigilante a recoger restos que otros visitantes han dejado en el museo. En concreto son 4; una lata de refresco, una botella de cristal, una taza de café y una tela que tapa uno de los cuadros. Una vez que el jugador los ha depositado todos en la papelera que puede verse al fondo, la sala se desbloquea y puede continuar visitando el museo.
+
+\subsection{Recogiendo basura virtual}
 
 Para hacer los elementos presentados anteriormente interactivos se utilizó un procedimiento similar a las piezas de fruta de la primera sala, utilizando la funcionalidad y las interfaces que provee el framework \acs{VRTK}. Por tanto, se omitirá su explicación y se pasará directamente a presentar el funcionamiento de la papelera.
 
@@ -299,6 +318,7 @@ En la imagen inferior, la figura \ref{fig:trash-detector}, puede verse el script
 \vspace{-0.25cm}
 \end{figure}
 
+\subsection{Mostrando la descripción de los cuadros}
 
 Lo siguiente en lo que se trabajó fue en mostrar la descripción de los cuadros cuando el jugador pulsara un botón. Se dedicó bastante tiempo a pensar la solución más orgánica, desde poner al lado de cada una cuadro un pequeño marco con la descripción, como en los museos de verdad, a cambiar la textura del cuadro a un texto con su descripción, pero ninguna terminaba de ser cómoda para el jugador. Por lo tanto, finalmente se decidió superponer un cuadrado semitransparente delante de la cámara con la descripción del cuadro, que apareciese y desapareciese cuando se pulsara un botón. Además, esta solución permitía reutilizarse para el sistema de diálogos que se implementaría en un futuro, y por lo tanto ahorrando tiempo de desarrollo, por lo que se decidió elegirla. Este cuadro sigue siempre al jugador pero está desactivado por defecto, por lo que solo es visible cuando se activa.
 
@@ -306,7 +326,7 @@ En la figura \ref{fig:camera-overlay} se muestra cómo funciona. Como puede vers
 
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=0.4\textwidth]{imagenes/7/camera-overlay.png}
+\includegraphics[width=0.75\textwidth]{imagenes/7/camera-overlay.png}
 \caption{Cuadro de texto superpuesto al mundo}
 \label{fig:camera-overlay}
 \end{center}
@@ -378,7 +398,7 @@ Una vez que se disponía del prototipo funcional de un arco capaz de disparar fl
 
 En este boceto se propuso colocar una mesa en el centro con el arco y el carcaj encima. De este modo, sería fácil para el jugador visualizar todos los objetivos que hubiera en la sala y dispararles. Además, también pueden verse grandes ventanas que permiten que entre más luz. Aunque en el boceto no se ve, porque aún no se tenía claro, finalmente el techo también fue abierto, como puede verse en el la figura \ref{fig:unity-sala-4}.
 
-Por otr olado, al comienzo del modelado de esta sala se empezó a ver que el espacio dedicado a las texturas era cada vez más y más grande. Inicialmente, para cada textura de Unity se utilizaban todos los mapas descargados, y la mayoría de ellos llegaba a una resolución de 4K, llegando a pesar cada uno varios megas, cuando no era necesaria para nada tanta resolución. Por ello, y tras comprobar que se veían bien, se decidió reducir todas las texturas a 1024\texttt{x}1024 píxeles y trabajar para cada textura únicamente con 3 mapas diferentes, que han sigo los siguientes.
+Por otro lado, al comienzo del modelado de esta sala se empezó a ver que el espacio dedicado a las texturas era cada vez más y más grande. Inicialmente, para cada textura de Unity se utilizaban todos los mapas descargados, y la mayoría de ellos llegaba a una resolución de 4K, llegando a pesar cada uno varios megas, cuando no era necesaria para nada tanta resolución. Por ello, y tras comprobar que se veían bien, se decidió reducir todas las texturas a 1024\texttt{x}1024 píxeles y trabajar para cada textura únicamente con 3 mapas diferentes, que han sigo los siguientes.
 
 \begin{itemize}
     \item Un mapa de color, que sería la textura propiamente dicha. En Unity, este mapa se llama \textbf{albedo}, que en física es el porcentaje de radiación que refleja una superficie respecto a la que incide sobre ella.
@@ -398,9 +418,9 @@ Por ello, se decidió repetir la textura del suelo de la primera sala en esta, d
 
 Tras esto, se importó el arco desde la escena de prueba hasta la definitiva y se comenzó a trabajar en un sistema capaz de informar al usuario a qué cuadro debe disparar de manera orgánica y detectar sus disparos. Finalmente se ha implementado un sistema que hace brillar parpadeando el borde del cuadro que el jugador tiene que disparar y lo ilumina en verde cuando acierta con una flecha para luego volver a su color original. Finalmente, cuando todos los cuadros han sido acertados las veces necesarias y el juego ha terminado, todos comienzan a parpadear con luz amarilla durante unos segundos y luego vuelven a la normalidad.
 
-Para dividir el trabajo entre varios scripts, se ha diseñado el siguiente sistema. Por un lado, cada cuadro tiene un script, \texttt{PaintingCollider-} \texttt{Detector.cs}, que le permite definir todos los parámetros necesarios para cada cuadro, como el material al que tienen que cambiar, el tiempo de fundido, si están activos o no... que se comunican con un gestor global, \texttt{ArrowGameManager.cs}, que elije qué cuadro será objetivo, y al que informan cuando un cuadro activo se acierta para que pueda llevar la cuenta de la puntuación, y finalmente activar la luz de victoria en todos los cuadros y desbloquear la puerta. En entregas futuras este script también activaría determinados diálogos del vigilante. Además, para evitar que los cuadros estuvieran brillando cuando el jugador entrara a la sala y antes de haber tenido tiempo de hablar con el vigilante para que le explique el juego, se ha hecho que el gestor del juego sea notificado cuando toque el jugador toque el arco para empezar, lo que se ha conseguido con el script \texttt{BowInformer.cs}, que utiliza una esfera de colisión en el mango para saber cuándo lo toca el jugador. Además, el arco también contiene el script para teletransportarse de vuelta a la mesa si toca el suelo.
+Para dividir el trabajo entre varios scripts, se ha diseñado el siguiente sistema. Por un lado, cada cuadro tiene un script, \texttt{PaintingCollider-} \texttt{Detector.cs}, que le permite definir todos los parámetros necesarios para cada cuadro, como el material al que tienen que cambiar, el tiempo de fundido, si están activos o no... que se comunican con un gestor global, \texttt{ArrowGameManager.cs}, que elije qué cuadro será objetivo, y al que informan cuando un cuadro activo se acierta para que pueda llevar la cuenta de la puntuación, y finalmente activar la luz de victoria en todos los cuadros y desbloquear la puerta. En entregas futuras este script también activaría determinados diálogos del vigilante. Además, para evitar que los cuadros estuvieran brillando cuando el jugador entrara a la sala y antes de haber tenido tiempo de hablar con el vigilante para que le explique el juego, se ha hecho que el gestor del juego sea notificado cuando el jugador toque el arco para empezar, lo que se ha conseguido con el script \texttt{BowInformer.cs}, que utiliza una esfera de colisión en el mango para saber cuándo el jugador lo está sosteniendo. Además, el arco también contiene el script para teletransportarse de vuelta a la mesa si toca el suelo.
 
-A continuación, la figura \ref{fig:sequence-diagram-bow} presenta un diagrama de secuencia que intenta presentar de un modo más visual lo que se ha explicado anteriormente. Aunque en Unity la vida de un objeto es más amplia, ya que se inician cuando la escena comienza y se destruyen cuando acaba, se ha adaptado para representar mejor cuándo interviene cada clase.
+A continuación, la figura \ref{fig:sequence-diagram-bow} contiene el diagrama de secuencia que intenta presentar de un modo más visual lo que se ha explicado anteriormente. Aunque en Unity la vida de un objeto es más amplia, ya que se inician cuando la escena comienza y se destruyen cuando acaba, se ha adaptado para representar mejor cuándo interviene cada clase.
 
 \begin{figure}[!h]
 \begin{center}
@@ -410,10 +430,8 @@ A continuación, la figura \ref{fig:sequence-diagram-bow} presenta un diagrama d
 \end{center}
 \end{figure}
 
-Para gestionar el estado de un cuadro, que puede ser \textit{Disabled}, \texttt{Enabled}, \textit{FadingToDisabled} y \textit{Winning}, se ha utilizado un \texttt{switch} en su método \texttt{Update()} que comprueba en cada frame su estado y actúa en consecuencia. Para cambiar su material, de nuevo, se ha utilizado la función \texttt{Lerp} de interpolación lineal. 
-En el listado \ref{lst:painting-collider} puede verse cómo funciona el \texttt{switch} mencionado anteriormente, cambiando su comportamiento dependiendo del estado, que actualiza el gestor del juego, y cómo se informa al gestor del juego cuando una flecha colisiona con un cuadro cuando éste está activo.
-
-\newpage
+Para gestionar el estado de un cuadro, que puede ser \texttt{Disabled}, \texttt{Enabled}, \texttt{FadingToDisabled} y \texttt{Winning}, se ha utilizado un \texttt{switch} dentro del método \texttt{Update()} que comprueba en cada frame su estado y actúa en consecuencia. Para cambiar su material, de nuevo, se ha utilizado la función \texttt{Lerp} de interpolación lineal. 
+En el listado \ref{lst:painting-collider} puede verse cómo funciona el \texttt{switch} mencionado anteriormente, cambiando su comportamiento dependiendo del estado, que actualiza de forma asíncrona el gestor del juego, y cómo se informa al gestor del juego cuando una flecha colisiona con un cuadro cuando éste está activo.
 
 \begin{lstlisting}[caption=Fragmento del script para actualizar un cuadro, label=lst:painting-collider]
 private void Update()
@@ -449,7 +467,7 @@ private void OnTriggerEnter(Collider other)
 }
 \end{lstlisting}
 
-Como puede verse, al colisionar con una flecha se anuncia al gestor del juego lo ocurrido, ya que éste es el encargado de controlar lo ocurrido. En el listado \ref{lst:painting-manager} puede verse este método y cómo comprueba cuántos cuadros se han acertado y si quedan más. De ser así, elige un cuadro aleatoriamente (que no puede ser el mismo) y se lo hace saber; por el contrario, si el juego ha terminado lo anuncia a todos los cuadros para que ellos lo gestionen y parpadeen en amarillo durante unos instantes.
+Como puede verse, al colisionar con un objeto que resulta ser una flecha se anuncia al gestor del juego lo ocurrido para que se encargue de ello. En el listado \ref{lst:painting-manager} puede verse este método y cómo comprueba cuántos cuadros se han acertado y si quedan más. De ser así, elige un cuadro aleatoriamente (que no puede ser el mismo) y le hace saber que es el elegido; por el contrario, si el juego ha terminado, lo anuncia a todos los cuadros para que ellos lo gestionen y parpadeen en amarillo durante unos instantes.
 
 \begin{lstlisting}[caption=Fragmento del script para gestionar el juego del arco, label=lst:painting-manager]
 public void AnnounceDetectedArrow(string painting_name)
@@ -459,7 +477,8 @@ public void AnnounceDetectedArrow(string painting_name)
 
     if (successfulShots >= MaxShoots)
     {
-        foreach (PaintingColliderDetector pcd in painting_scripts)
+        foreach (PaintingColliderDetector pcd
+                    in painting_scripts)
         {
             pcd.Win();
         }
@@ -473,7 +492,7 @@ public void AnnounceDetectedArrow(string painting_name)
 \end{lstlisting}
 
 
-Por otro lado, al empezar a probar el proyecto con jugadores reales se vio que no había ningún tipo de retroalimentación en el momento en el que la puerta se desbloqueaba, es decir, el jugador no sabía cuando podía pasar a la siguiente sala ni qué puertas estaban bloqueadas. Por ello, se colocó la imagen de un candado delante de las puertas bloqueadas que, gestionado por el propio script que activa y desactiva el teletransporte, es visible cuando el jugador no puede utilizarla y es deshabilitado y desaparece cuando la puerta es usable.
+Por otro lado, al empezar a probar el proyecto con jugadores reales se vio que no había ningún tipo de retroalimentación en el momento en el que la puerta se desbloqueaba; es decir, el jugador no sabía cuando podía pasar a la siguiente sala ni qué puertas estaban bloqueadas. Por ello, se colocó la imagen de un candado delante de las puertas bloqueadas que, gestionado por el propio script que activa y desactiva el teletransporte, es visible cuando el jugador no puede utilizarla y es deshabilitado y desaparece cuando la puerta es usable.
 
 Por último, antes de pasar a la siguiente entrega, se comenzó a trabajar en la siguiente sala, la quinta, ambientada en el romanticismo. Como tal, se intentó dar un aspecto místico utilizando poca luz y un sistema de partículas de niebla, aunque éste no fue implementado hasta la siguiente entrega.
 
@@ -489,7 +508,7 @@ Así, el boceto generado para esta sala puede verse en la figura \ref{fig:boceto
 \end{center}
 \end{figure}
 
-Pero apenas se comenzó a modelarla cuando llegó la fecha de finalización de la entrega, por lo que se terminó de trabajar en la misma y se grabó el vídeo mostrando el resultado hasta la fecha, que incluía las cuatro primeras salas terminadas y pequeños añadidos como los candados de las puertas o el fundido a negro entre salas. Dicho vídeo puede verse a continuación.
+Pero apenas se comenzó a modelarla cuando llegó la fecha de finalización de la entrega, por lo que se terminó de trabajar en la misma y se grabó el vídeo mostrando el resultado hasta la fecha, que incluía las cuatro primeras salas terminadas y pequeños añadidos como los candados de las puerta. Dicho vídeo puede verse a continuación.
 
 \begin{center}
     \url{https://youtu.be/w83YTZuz6tQ}
@@ -499,6 +518,14 @@ Pero apenas se comenzó a modelarla cuando llegó la fecha de finalización de l
 
 \section{Entrega 5}
 
+Tras dar por finalizada la entrega 4, la primera tarea en la que comenzó a trabajar fue el terminar el modelado de la quinta sala. Como ya se ha comentado antes, finalmente la alfombra de en medio se eliminó y fue sustituida por la estatua de \textit{El pensador}, además de situar los cajones al fondo para intentar ocultarlos. 
+
+Para generar niebla realista se han utilizado dos componentes simultáneamente. Por un lado, se ha utilizado un sistema de partículas  que, a partir de un \textit{tileset} o conjunto de imágenes de humo, consigue generar imágenes translúcidas y en movimiento a lo largo de la sala. Además, se ha configurado este sistema para que roten y cambien de dirección ligera y aleatoriamente, dando la sensación de bruma cambiante. 
+
+Por otro, se ha utilizado el sistema de iluminado para simular lo que se conoce como \textit{deferred fog}\footnote{\url{https://docs.unity3d.com/Manual/PostProcessing-Fog.html}} o niebla diferida. Este efecto superpone un color a los objetos dependiendo de lo lejos que estén de la cámara; así, si un objeto está cerca se verá tal cual pero si se aleja se irá volviendo poco a poco del color indicado. En este caso el color elegido has sido gris, lo que junto al sistema de partículas simula de un modo lo suficientemente realista el efecto óptico que genera la niebla real.
+
+El resultado final de esta sala puede verse en la figura \ref{fig:unity-sala-5}.
+
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-5.png}
@@ -507,6 +534,27 @@ Pero apenas se comenzó a modelarla cuando llegó la fecha de finalización de l
 \end{center}
 \end{figure}
 
+Una vez que la sala estaba terminada se pasó a implementar el acertijo elegido. Como ya se introdujo anteriormente, la quisicosa para esta sala sería un cajón interactivo escondiendo la llave de la puerta de salida y las sílabas de la palabra \textit{cajones} en cada uno. Por ello, en cada uno de los 3 de la sala se colocó un cuadro de texto con la librería TextMeshPro para que pudieran leerse siempre nítidamente. El cuadro \textit{Doña Juana la Loca} contiene la sílaba \textit{CA} cerca del ataúd de Felipe el Hermoso, el cuadro \textit{El caminante sobre un mar de nubes} contiene la sílaba \textit{JO} entre la niebla y por último el cuadro \textit{El Fusilamiento de Torrijos y sus compañeros} contiene la sílaba \textit{NES} cerca del general. Además, cada uno de los textos tiene un color muy parecido a la parte que sobre la que están colocados.
+
+Para terminar con esta sala, se procedió a implementar los cajones interactivos. Para ello, tras modelar una pequeña mesa con cinco cajones y una llave antigua en Blender, se importaron a Unity y se utilizó el script \texttt{VRTK\_Physics\_Slider.cs} para hacer que los cajones se pudieran deslizar en una dirección y se colocó la llave dentro de uno de ellos. El problema con este script fue que lo que en teoría debería haber sido algo relativamente directo se convirtió en un interminable ajuste de parámetros para conseguir que el sistema funcionara correctamente, e incluso fue necesario bucear en el código fuente del framework para averiguar por qué no lo hacía. Finalmente fue necesario escribir un pequeño script, llamado \texttt{CollisionIgnorer.cs}, para hacer que la llave ignorara la caja de colisión con la mesa. Como puede verse en el listado \ref{lst:collision-ignorer}, este script hace uso de la interfaz al motor de físicas de Unity y comprueba cuando colisiona con un objeto si corresponde con el que se ha indicado que ignore para indicarle que lo haga.
+
+\begin{lstlisting}[caption=Fragmento del script para ignorar colisiones, label=lst:collision-ignorer]
+public GameObject ignoredObject;
+
+ void OnCollisionEnter(Collision collision)
+{
+    if (collision.gameObject.name == ignoredObject.name)
+    {
+        Physics.IgnoreCollision(
+                    collision.collider, 
+                    GetComponent<Collider>());
+    }
+}
+\end{lstlisting}
+
+Por último, para hacer que el jugador pudiese colocar la llave en la cerradura de la puerta, que no era más que una imagen como se explica en la entrega anterior, se utilizó una \textit{snap drop zone} estratégicamente colocada en el ojo de la cerradura para que pareciese que realmente estaba activando su mecanismo, y como ya se ha explicado anteriormente su uso esta vez se omitirá. Por último, para detectar cuando la llave es colocada se utiliza el script \texttt{KeyDetector.cs} que se suscribe al evento que emite la clase \textit{VRTK\_SnapDropZone} cuando se le coloca un objeto, comprueba que se trata de la llave y de ser así se lo comunica al script de la puerta, que oculta el candado y se activa para permitir al usuario pasar a la siguiente sala.
+
+Así, una vez que se terminó la quinta sala, se comenzó a trabajar en la sexta y, como en el resto, se comenzó por su boceto, que puede verse en la figura \ref{fig:boceto-sala-6}. Como se ha introducido anteriormente, en esta sala hay cuatro cuadros, divididos en cuatro piezas cada uno, que el jugador tiene que colocar en su sitio y en orden. En cada pared, además del hueco para las piezas y una pequeña miniatura del cuadro que el jugador puede usar como referencia, hay una bombilla que indica mediante su color si el cuadro está sin terminar, brillando en amarillo, si el cuadro se ha terminado pero mal, brillando en rojo, y si el cuadro es correcto, con lo que brillaría en verde. El utilizar una bombilla que cambie de color es la interfaz más natural con el jugador y la manera más orgánica de proporcionarle retroalimentación que se ha valorado.
 
 \begin{figure}[!h]
 \begin{center}
@@ -516,6 +564,14 @@ Pero apenas se comenzó a modelarla cuando llegó la fecha de finalización de l
 \end{center}
 \end{figure}
 
+Como está ambientada en las vanguardias del siglo XX, se ha intentado dar un aspecto más modernista a esta sala modelándola con amplias paredes blancas con forma hexagonal, lo que coincide con el tener cuatro cuadros, uno en cada pared, más dos para las puertas de entrada y salida. Además, también se ha utilizado una textura de azulejos con forma pseudo-hexagonal para el suelo. 
+
+Por otro lado, en el centro de la sala se encuentra un pequeño recipiente con las 12 piezas de los cuadros que el jugador debe coger para colocarlas.
+
+Finalmente, encima de la puerta de salida que, como indica el guardia, lleva a su almacén (en el que es finalmente desenmascarado como el ladrón de guante blanco), se ja colocado un pequeño letrero en el que puede leerse \textit{Staff}.
+
+La imagen con la versión final de la sala puede verse en la figura \ref{fig:unity-sala-6} con todos los elementos explicados anteriormente. Aunque en el juego evidentemente las piezas no pueden aparecer puestas y en el contenedor del centro, en la imagen se muestran ambas para que el lector pueda hacerse una idea de cómo quedan tanto colocadas como antes de hacerlo.
+
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-6.png}
@@ -524,6 +580,70 @@ Pero apenas se comenzó a modelarla cuando llegó la fecha de finalización de l
 \end{center}
 \end{figure}
 
+Una vez explicado el modelado de la sala, se pasará a contar cómo se ha implementado el sistema de puzzles con las piezas. Lo primero que es necesario contar es que, al igual que en todos los casos anteriores en los que se requería que el usuario colocase objetos en lugares específicos, se ha usado la combinación de objetos interactivos (en este caso las piezas de los cuadros) con \textit{snap drop zones} (los huecos en los que es necesario colocarlos).
+
+Para implementar este sistema se ha utilizado un diseño \textit{master/slave} parecido al del arco que dispara a cuadros, en el que hay un çunico componente con una idea global de lo que está pasando encargado de controlar al resto, que simplemente le informan de lo que pasa y actúan cuando se lo ordena.
+
+En este caso, los \textit{slaves} son las cuatro instancias del script \texttt{Painting-} \texttt{Checker.cs}, una por cada cuadro. Este script es el encargado de manejar las cuatro \textit{snap drop zones} de las que se compone un cuadro (una para cada pieza), detectando cuándo se coloca y se retira una pieza. Además, como la nomenclatura que se ha seguido para las piezas y las zonas ha sido llamar a cada zona con el mismo nombre que la pieza que tiene que contener, es sencillo para el script saber si ésta está en su lugar o no.
+
+Para este puzzle ha sido de vital importancia colocar las zonas justo donde corresponden, para que cuando el cuadro esté completado no se noten los cortes entre ellas. Esta tarea ha sido relativamente compleja y ha sido necesario apuntar manualmente las posiciones exactas desde Blender y hacer el cálculo de cambio de ejes a Unity, ya que los ejes \texttt{X}, \texttt{Y}, \texttt{Z} en Blender corresponden a \texttt{X}, \texttt{Z}, \texttt{-Y} en Unity.
+
+En la figura \ref{fig:painting-piece-hover} puede verse cómo se ilumina una zona al pasar el cuadro por encima, que por defecto es invisible; de este modo es posible para el jugador saber en qué sitio está colocando la pieza.
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{imagenes/7/painting-piece-hover.png}
+\caption{Pieza de un cuadro sobre uno de los posibles huecos}
+\label{fig:painting-piece-hover}
+\end{center}
+\vspace{-0.5cm}
+\end{figure}
+
+Como puede verse, la pieza es tres veces menor que la zona, y una vez puesta triplicará su tamaño. Esto se ha hecho así porque al principio del diseño se vio que las piezas del cuadro eran demasiado grandes para ser manejadas con comodidad, lo que no era posible hasta que medían aproximadamente un tercio de su tamaño. Así, se ha configurado la zona para que al colocar un objeto sobre ella que sea del tipo esperado haga aumentar su tamaño tres veces.
+
+Para poder detectar cuándo se colocan objetos, el script suscribe el mismo método al evento de todas sus zonas que informan de éste hecho. Aunque se podría haber suscrito un método a cada uno y se sabría de antemano qué zona es la que lo ha emitido, este diseño es mucho más compacto y reutilizable e implica menos duplicidad de código.
+
+A continuación, en el listado \ref{lst:painting-checker} puede verse cómo cuando se coloca una pieza en una de las cuatro \textit{snap drop zones} que gestiona cada script se llama al siguiente método, que compruba, primero, que el cuadro no esté ya terminado. Si no lo está, aumenta en uno el número de piezas que tiene y, si la pieza ha sido colocada en su sitio, aumenta en uno el número de piezas correctas, pero si no y si está lleno enciende la luz roja. Por el contrario, si todas las piezas han sido colocadas correctamente el cuadro ha sido terminado, por lo que cambia la bombilla a verde, deshabilita las cajas de colisión de todas las piezas para que puedan ser retiradas e informa al \textit{master} de que el cuadro ha sido terminado correctamente.
+
+\begin{lstlisting}[caption=Fragmento del script detectar piezas de cuadros, label=lst:painting-checker]
+internal void OnPieceSnapped(object sender, 
+                        SnapDropZoneEventArgs e)
+{
+    if (!isCorrectlyFinished)
+    {
+        currentPieces++;
+    
+        string objectName = e.snappedObject.name;
+        string zoneName = sender.ToString();
+    
+        if (PieceIsCorrect(objectName, zoneName))
+        {
+            correctPieces++;
+            if (correctPieces == MAX_PIECES)
+            {
+                isCorrectlyFinished = true;
+    
+                ChangeBulbColor(LightGreen);
+                LockAllPiecesInPlace();
+    
+                gameManagerScript.PaintingFinished();
+            }
+        }
+    
+        if (currentPieces == MAX_PIECES 
+            && !isCorrectlyFinished)
+        {
+            ChangeBulbColor(LightRed);
+        }
+    }
+}
+\end{lstlisting}
+
+Por otro lado, el \textit{master} del sistema es el script \texttt{PaintingPiecesGame-} \texttt{Manager.cs}. Este componente es informado de los eventos que suceden y actúa en consecuencia. Además, de manera similar a la sala del arco, cuando el jugador entra en esta sala todas las bombillas están apagadas, y no se encienden hasta que el jugador se acerca al contenedor central. Este recipiente tiene un script, \texttt{GameStarter.cs}, que informa al \textit{master}, quien a su vez le indica a todos los \textit{slaves} que enciendan las luces. Finalmente, cuando ha recibido un número de mensajes igual al tamaño de su vector de \textit{slaves} desbloquea la puerta de salida para que el jugador pueda continuar.
+
+En entregas posteriores se integraría el gestor de diálogos del vigilante para que hablara cada vez que un cuadro era completado.
+
+Finalmente, antes de terminar la entrega se grabó un vídeo demostrativo, explicando todos los cambios implementados a lo largo de la misma, que puede verse en el siguiente enlace.
 
 \begin{center}
     \url{https://youtu.be/WDkoSrzh24o}
