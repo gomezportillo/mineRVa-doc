@@ -75,7 +75,9 @@ Como se indicó en el capítulo \ref{chap:plan_entregas}, el objetivo final de l
 
 Lo primero que se hizo antes de comenzar a modelar en Blender, ya que es mucho menos productivo empezar a trabajar sin una idea previa, fue diseñar un boceto en papel en el poder basar el modelado posterior.
 
-Como se consideró que el museo sería más realista si en lugar de empezar directamente en él el jugador tuviera que recorrer un pequeño pasillo que funcionara de antesala y desde el que se pudiera ver el exterior, fue el primer boceto que se hizo, y tras él se dibujó la sala que actuaría de tutorial. Esta sala tendría que presentar un cuadro muy reconocible y una pequeña prueba relacionada con él, por lo que se decidió utilizar el cuadro \textit{El Hijo del Hombre} de René Magritte (1964) y que el jugador tuviera que cambiar de sitio una pieza de fruta relacionada con este cuadro, de este modo aprendiendo que puede interaccionar con los elementos virtuales y que habrá relación entre las pruebas y las obras de arte de tal manera que el reto sea darse cuenta de estas ideas y no la prueba en sí. La imagen \ref{fig:bocetos-salas-0-1} muestra el boceto de estas dos salas, que fue dibujado antes de comenzar a modelarlas.
+Como se consideró que el museo sería más realista si en lugar de empezar directamente en él el jugador tuviera que recorrer un pequeño pasillo que funcionara de antesala y desde el que se pudiera ver el exterior, fue el primer boceto que se hizo, y tras él se dibujó la sala que actuaría de tutorial. Además, en esta antesala se recibiría una llamada de la directora del museo en la que presenta al jugador como un detective de renombre y expone el problema del cuadro robado. Tras ello, le indicaría que hablase con el vigilante del museo para más información.
+
+Tras ello, en la primera sala se tendría que presentar un cuadro muy reconocible y una pequeña prueba relacionada con él, por lo que se decidió utilizar el cuadro \textit{El Hijo del Hombre} de René Magritte (1964) y que el jugador tuviera que cambiar de sitio una pieza de fruta relacionada con este cuadro, de este modo aprendiendo que puede interaccionar con los elementos virtuales y que habrá relación entre las pruebas y las obras de arte de tal manera que el reto sea darse cuenta de estas ideas y no la propia prueba en sí, ya que sería algo trivial. La imagen \ref{fig:bocetos-salas-0-1} muestra el boceto de estas dos salas, que fue dibujado antes de comenzar a modelarlas.
 
 \begin{figure}[!h]
 \begin{center}
@@ -122,14 +124,14 @@ Una vez que las dos salas estaban modeladas se trabajó en hacer que el jugador 
 Para ello, lo primero que se hizo fue añadir una caja de colisiones sin físicas a la puerta, lo que permite añadir un \textit{listener} para detectar colisiones y poder activar otras funciones. Tras ello, se desarrolló y añadió un script como componente, que puede verse simplificado en el listado \ref{lst:viajar-salas}, que usa la clase \texttt{SceneManager} para cambiar la escena cuando el jugador colisiona con ella tras comprobar previamente que no se encuentra cargada. En él se declaran dos variables públicas para poder definirlas desde el propio inspector de Unity más cómodamente, como puede verse en la figura \ref{fig:door-teleporter-inspector}, lo que añade flexibilidad y reutilización al código. El script entero se encuentra en el archivo \texttt{DoorTeletransporter.cs}.
 
 \begin{lstlisting}[caption=Fragmento del script para viajar entre salas, label=lst:viajar-salas]
-public string scene_name;
+public string sceneName;
 public float fadingTime = 10.0f;
 
 private void OnTriggerEnter(Collider other)
 {
-    if (scene_name != "" && !SceneManager.GetSceneByName(scene_name).isLoaded)
+    if (sceneName != String.Empty && !SceneManager.GetSceneByName(sceneName).isLoaded)
     {
-        SceneManager.LoadScene(scene_name, LoadSceneMode.Single);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 }
 \end{lstlisting}
@@ -219,7 +221,7 @@ private void Update()
 
 Además, multiplicando la velocidad de apertura por el tiempo transcurrido desde el último frame ejecutado (obtenido con la función \texttt{Time.detaTime}) podemos asegurar que el todos los ordenadores en los que se ejecute se abrirá a la misma velocidad, evitando así que el juego se ejecute más rápido en ordenadores más potentes.
 
-Por otro lado, para permitir al jugador abrir y cerrar el cuadro que esconde la palanca como si fuera ventana se ha utilizado el script \texttt{VRTK\_Physics\_-} \texttt{Rotator} al que, indicándole un vector que actúa como bisagra y el ángulo que soporta, además de otros parámetros, es capaz de rotar el objeto que lo contiene.
+Por otro lado, para permitir al jugador abrir y cerrar el cuadro que esconde la palanca como si fuera ventana se ha utilizado el script \texttt{VRTK\_Physics\_-} \texttt{Rotator} al que, indicándole un vector que actúa como bisagra y el ángulo de apertura, además de otros parámetros, es capaz de rotar el objeto que lo contiene.
 
 \subsection{Teletransportar los objetos que toquen el suelo}
 
@@ -283,9 +285,9 @@ Aunque inicialmente se intentaron varios enfoques para hacer funcionar esta pape
 
 Por tanto, se colocaron cuatro zonas concéntricas, una por cada objeto, y se configuraron de tal manera que al dejar un objeto dentro hacían que su tamaño se encogiese hasta ser prácticamente invisible, y luego lo eliminaban. Por otro lado, para detectar cuándo una de estas zonas detectaba un objeto, se utilizaron eventos de Unity. Estos eventos permiten suscribirse a ellos y resultar notificado cuando se activen. Así, las \textit{snap drop zones} ofrecen sus propios eventos; por tanto, una vez podemos acceder a las 4 zonas desde el código basta con utilizar el operador \texttt{+=} para suscribir un método que implemente la interfaz necesaria al evento de un objeto.
 
-En el listado \ref{lst:trash-detector} pueden verse simplificadas los fragmentos más relevantes de este script. La primera linea declara un vector público de \textit{snap drop zones}, lo que permite definir desde el inspector su tamaño y sus elementos. Posteriormente, cuando la escena comienza, se recorre este vector con un iterador \texttt{foreach} y se suscribe un método propio a los eventos de todas las zonas que anuncian que un objeto le ha sido agregado. Así, cada vez que una zona adquiera un objeto se llamará a la función de la línea 11, que comprobará si el objeto añadido corresponde con aquellos que nos interesan y podrá de este modo llevar un registro de cuántos elementos se han depositado en la papelera y cuándo desbloquear la puerta de salida. 
+En el listado \ref{lst:trash-detector} pueden verse simplificadas los fragmentos más relevantes de este script. La primera linea declara un vector público de \textit{snap drop zones}, lo que permite definir desde el inspector su tamaño y sus elementos. Posteriormente, cuando la escena comienza, se recorre este vector con un iterador \texttt{foreach} y se suscribe un método propio a los eventos de todas las zonas que anuncian que un objeto le ha sido agregado. Así, cada vez que una zona adquiera un objeto se llamará a la función de la línea \ref{line:check-tag}, que comprobará si el objeto añadido corresponde con aquellos que nos interesan y podrá de este modo llevar un registro de cuántos elementos se han depositado en la papelera y cuándo desbloquear la puerta de salida. 
 
-\begin{lstlisting}[caption=Fragmento del script para detectar piezas de basura, label=lst:trash-detector]
+\begin{lstlisting}[caption=Fragmento del script para detectar piezas de basura, label=lst:trash-detector, escapechar=|]
 public VRTK_SnapDropZone[] snapDropZones;
 
 private readonly string TRASH_TAG = "Trash";
@@ -300,7 +302,7 @@ private void Start()
 
 internal void OnTrashSnapped(object sender, SnapDropZoneEventArgs e)
 {
-    if (e.snappedObject.tag == TRASH_TAG)
+    if (e.snappedObject.tag == TRASH_TAG)|\label{line:check-tag}|
     {
         trashCounter++;
     }
@@ -336,7 +338,7 @@ Además, Unity trabaja por defecto con letras rasterizadas; es decir, pueden ver
 
 Por tanto, una vez que se disponía de letras legibles que seguían al jugador fue momento de hacer que el cuadro apareciera con la descripción de un cuadro (cargada desde un archivo de texto en disco) cuando el jugador estuviera cerca de él y pulsara un botón.
 
-Para ello, cada cuadro cuenta con un script, llamado \texttt{Painting-} \texttt{DescriptionManager.cs}, que utiliza una esfera de colisión para detectar cuándo se encuentra cerca el jugador y, cuando lo hace, activa un pequeño icono enfrente del jugador para que éste sepa que tiene disponible la descripción de un cuadro pulsando un botón.
+Para ello, cada cuadro tiene un script llamado \texttt{PaintingDescription-} \texttt{Manager.cs}, que utiliza una esfera de colisión para detectar cuándo se encuentra cerca el jugador y, cuando lo hace, activa un pequeño icono enfrente del jugador para que éste sepa que tiene disponible la descripción de un cuadro pulsando un botón.
 
 A continuación, cuando el jugador pulsa el botón el script se encarga de escribir su descripción, que previamente ha leído de disco, en el cuadro delante del jugador, y después lo vuelve visible para que pueda ser leído. Este cuadro vuelve a ser invisible tanto si el jugador deja de pulsar el botón como si se aleja del cuadro.
 
@@ -368,7 +370,11 @@ private void ControllerEvents_ButtonTwoPressed(object sender, ControllerInteract
 
 Además, en las últimas líneas puede leerse cómo se llama al método encargado de reproducir un pequeño efecto de sonido, que sería implementado en una de las últimas entregas.
 
+\subsection{Fundido a negro entre salas}
+
 Además, como otro de los objetivos de esta entrega era realizar un fundido a negro al cambiar de salas, se utilizó un plano negro colocado frente a la cámara de manera similar que el de la descripción de los cuadros, aunque más cerca. Este plano comienza la escena completamente opaco y ve reducido su opacidad gradualmente hasta ser completamente transparente, lo que da al jugador el efecto de un fundido desde negro. Como vuelve a ser necesario realizar la interpolación lineal de un parámetro entre dos valores a lo largo del tiempo, como en la entrega anterior, se utilizó la función \texttt{Lerp} de la clase \texttt{Color} para actualizar el color del plano.
+
+\subsection{Prototipado de un arco}
 
 Para finalizar esta entrega, la última tarea que falta es desarrollar el prototipo de un sistema de interacción avanzado que se finalizaría y perfilaría en la siguiente entrega. La idea era implementar un sistema que permitiera al jugador disparar y aunque se valoraron varios tipos, como pistolas, finalmente se decidió que el más interactivo para el jugador, además de el que más cuadraba con las temáticas del museo, sería un arco.
 
@@ -398,6 +404,8 @@ Una vez que se disponía del prototipo funcional de un arco capaz de disparar fl
 
 En este boceto se propuso colocar una mesa en el centro con el arco y el carcaj encima. De este modo, sería fácil para el jugador visualizar todos los objetivos que hubiera en la sala y dispararles. Además, también pueden verse grandes ventanas que permiten que entre más luz. Aunque en el boceto no se ve, porque aún no se tenía claro, finalmente el techo también fue abierto, como puede verse en el la figura \ref{fig:unity-sala-4}.
 
+\subsection{Limitando el peso por texturas}
+
 Por otro lado, al comienzo del modelado de esta sala se empezó a ver que el espacio dedicado a las texturas era cada vez más y más grande. Inicialmente, para cada textura de Unity se utilizaban todos los mapas descargados, y la mayoría de ellos llegaba a una resolución de 4K, llegando a pesar cada uno varios megas, cuando no era necesaria para nada tanta resolución. Por ello, y tras comprobar que se veían bien, se decidió reducir todas las texturas a 1024\texttt{x}1024 píxeles y trabajar para cada textura únicamente con 3 mapas diferentes, que han sigo los siguientes.
 
 \begin{itemize}
@@ -415,6 +423,8 @@ Por ello, se decidió repetir la textura del suelo de la primera sala en esta, d
 \label{fig:unity-sala-4}
 \end{center}
 \end{figure}
+
+\subsection{Disparando a los cuadros}
 
 Tras esto, se importó el arco desde la escena de prueba hasta la definitiva y se comenzó a trabajar en un sistema capaz de informar al usuario a qué cuadro debe disparar de manera orgánica y detectar sus disparos. Finalmente se ha implementado un sistema que hace brillar parpadeando el borde del cuadro que el jugador tiene que disparar y lo ilumina en verde cuando acierta con una flecha para luego volver a su color original. Finalmente, cuando todos los cuadros han sido acertados las veces necesarias y el juego ha terminado, todos comienzan a parpadear con luz amarilla durante unos segundos y luego vuelven a la normalidad.
 
@@ -491,6 +501,7 @@ public void AnnounceDetectedArrow(string painting_name)
 }
 \end{lstlisting}
 
+\subsection{Mostrando un candado en las puertas bloqueadas}
 
 Por otro lado, al empezar a probar el proyecto con jugadores reales se vio que no había ningún tipo de retroalimentación en el momento en el que la puerta se desbloqueaba; es decir, el jugador no sabía cuando podía pasar a la siguiente sala ni qué puertas estaban bloqueadas. Por ello, se colocó la imagen de un candado delante de las puertas bloqueadas que, gestionado por el propio script que activa y desactiva el teletransporte, es visible cuando el jugador no puede utilizarla y es deshabilitado y desaparece cuando la puerta es usable.
 
@@ -520,6 +531,8 @@ Pero apenas se comenzó a modelarla cuando llegó la fecha de finalización de l
 
 Tras dar por finalizada la entrega 4, la primera tarea en la que comenzó a trabajar fue el terminar el modelado de la quinta sala. Como ya se ha comentado antes, finalmente la alfombra de en medio se eliminó y fue sustituida por la estatua de \textit{El pensador}, además de situar los cajones al fondo para intentar ocultarlos. 
 
+\subsection{Niebla virtual}
+
 Para generar niebla realista se han utilizado dos componentes simultáneamente. Por un lado, se ha utilizado un sistema de partículas  que, a partir de un \textit{tileset} o conjunto de imágenes de humo, consigue generar imágenes translúcidas y en movimiento a lo largo de la sala. Además, se ha configurado este sistema para que roten y cambien de dirección ligera y aleatoriamente, dando la sensación de bruma cambiante. 
 
 Por otro, se ha utilizado el sistema de iluminado para simular lo que se conoce como \textit{deferred fog}\footnote{\url{https://docs.unity3d.com/Manual/PostProcessing-Fog.html}} o niebla diferida. Este efecto superpone un color a los objetos dependiendo de lo lejos que estén de la cámara; así, si un objeto está cerca se verá tal cual pero si se aleja se irá volviendo poco a poco del color indicado. En este caso el color elegido has sido gris, lo que junto al sistema de partículas simula de un modo lo suficientemente realista el efecto óptico que genera la niebla real.
@@ -533,6 +546,8 @@ El resultado final de esta sala puede verse en la figura \ref{fig:unity-sala-5}.
 \label{fig:unity-sala-5}
 \end{center}
 \end{figure}
+
+\subsection{Cuadros con pistas y cajones interactivos}
 
 Una vez que la sala estaba terminada se pasó a implementar el acertijo elegido. Como ya se introdujo anteriormente, la quisicosa para esta sala sería un cajón interactivo escondiendo la llave de la puerta de salida y las sílabas de la palabra \textit{cajones} en cada uno. Por ello, en cada uno de los 3 de la sala se colocó un cuadro de texto con la librería TextMeshPro para que pudieran leerse siempre nítidamente. El cuadro \textit{Doña Juana la Loca} contiene la sílaba \textit{CA} cerca del ataúd de Felipe el Hermoso, el cuadro \textit{El caminante sobre un mar de nubes} contiene la sílaba \textit{JO} entre la niebla y por último el cuadro \textit{El Fusilamiento de Torrijos y sus compañeros} contiene la sílaba \textit{NES} cerca del general. Además, cada uno de los textos tiene un color muy parecido a la parte que sobre la que están colocados.
 
@@ -552,7 +567,9 @@ public GameObject ignoredObject;
 }
 \end{lstlisting}
 
-Por último, para hacer que el jugador pudiese colocar la llave en la cerradura de la puerta, que no era más que una imagen como se explica en la entrega anterior, se utilizó una \textit{snap drop zone} estratégicamente colocada en el ojo de la cerradura para que pareciese que realmente estaba activando su mecanismo, y como ya se ha explicado anteriormente su uso esta vez se omitirá. Por último, para detectar cuando la llave es colocada se utiliza el script \texttt{KeyDetector.cs} que se suscribe al evento que emite la clase \textit{VRTK\_SnapDropZone} cuando se le coloca un objeto, comprueba que se trata de la llave y de ser así se lo comunica al script de la puerta, que oculta el candado y se activa para permitir al usuario pasar a la siguiente sala.
+Por último, para hacer que el jugador pudiese colocar la llave en la cerradura de la puerta, que no era más que una imagen como se explica en la entrega anterior, se utilizó una \textit{snap drop zone} estratégicamente colocada en el ojo de la cerradura para que pareciese que realmente estaba activando su mecanismo, y como ya se ha explicado anteriormente su uso esta vez se omitirá. Por último, para detectar cuando la llave es colocada se utiliza el script \texttt{KeyDetector.cs} que se suscribe al evento que emite la clase \texttt{VRTK\_SnapDropZone} cuando se le coloca un objeto, comprueba que se trata de la llave y de ser así se lo comunica al script de la puerta, que oculta el candado y se activa para permitir al usuario pasar a la siguiente sala.
+
+\subsection{Descripción de la sala de las vanguardias}
 
 Así, una vez que se terminó la quinta sala, se comenzó a trabajar en la sexta y, como en el resto, se comenzó por su boceto, que puede verse en la figura \ref{fig:boceto-sala-6}. Como se ha introducido anteriormente, en esta sala hay cuatro cuadros, divididos en cuatro piezas cada uno, que el jugador tiene que colocar en su sitio y en orden. En cada pared, además del hueco para las piezas y una pequeña miniatura del cuadro que el jugador puede usar como referencia, hay una bombilla que indica mediante su color si el cuadro está sin terminar, brillando en amarillo, si el cuadro se ha terminado pero mal, brillando en rojo, y si el cuadro es correcto, con lo que brillaría en verde. El utilizar una bombilla que cambie de color es la interfaz más natural con el jugador y la manera más orgánica de proporcionarle retroalimentación que se ha valorado.
 
@@ -579,6 +596,8 @@ La imagen con la versión final de la sala puede verse en la figura \ref{fig:uni
 \label{fig:unity-sala-6}
 \end{center}
 \end{figure}
+
+\subsection{Puzzles virtuales con piezas de cuadros}
 
 Una vez explicado el modelado de la sala, se pasará a contar cómo se ha implementado el sistema de puzzles con las piezas. Lo primero que es necesario contar es que, al igual que en todos los casos anteriores en los que se requería que el usuario colocase objetos en lugares específicos, se ha usado la combinación de objetos interactivos (en este caso las piezas de los cuadros) con \textit{snap drop zones} (los huecos en los que es necesario colocarlos).
 
@@ -653,13 +672,46 @@ Finalmente, antes de terminar la entrega se grabó un vídeo demostrativo, expli
 
 \section{Entrega 6}
 
+Lo primero que se comenzó a hacer en la entrega 6 fue modelar la séptima sala, el almacén del vigilante, en la que el juego llega a su desenlace y se desenmascara finalmente al ladrón del cuadro.
+
+\subsection{El almacén del vigilante y el cuadro robado}
+
+Para esta sala, como en comparación con el resto es más simple, no fue necesario realizar un boceto y se pasó directamente a modelarla. Es una habitación cuadrara, relativamente pequeña, para la que se ha utilizado una textura de pintura desconchada para las paredes y de cemento para el suelo para que, en contraposición con el resto del museo, parezca vieja y abandonada, en un intento de destapar al vigilante alguien malvado. Además de las estanterías, la sala cuenta con varias cajas y palés, algo que temáticamente encajaría en un almacén, que puede verse terminada en la figura \ref{fig:unity-sala-7}.
+
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-sala-7.png}
 \caption{Sala 7 renderizada en Unity}
 \label{fig:unity-sala-7}
 \end{center}
+\vspace{-0.35cm}
 \end{figure}
+
+Además, para dar más realismo a la sala, se han colocado diversos objetos temáticos, como cubos, un limpiacristales o Suzanne, el icónico logo de Blender con forma de cabeza de mono. Además, el jugador puede interactuar con todos ellos.
+
+En el centro de la sala, encima de una silla y tapado por diversos objetos como cajas y cepillos que el jugador tendrá que quitar de en medio para llegar hasta él, se encuentra el cuadro robado. Se ha dedicado bastante tiempo en pensar qué cuadro elegir como el robado, si debía ser real o ficticio, y finalmente se ha inventado a un pintor, Bunksy (un juego de palabras con el pintor Banksy), quien resulta ser el artista más famoso del mundo y cuyas obras valen millones de euros. Este pintor es el autor del cuadro \textit{Universo} que fue robado por el vigilante y que, como confesará más adelante, lo hizo porque él es el único que sabe reconocer el verdadero valor de la pieza, por lo que es el único que merece tenerlo.
+
+Este cuadro, en una referencia al arte conceptual, ha sido adaptado de una imagen de una macha de vino con licencia libre a la que se le han aplicado diversos filtros en GIMP, como desaturación, posterización o el filtro artístico \textit{oilify}. La versión final de este cuadro puede verse en la figura \ref{fig:universe}.
+
+\begin{figure}[!h]
+\vspace{-0.15cm}
+\begin{center}
+\includegraphics[width=0.3\textwidth]{imagenes/7/wine-stain.jpg}
+\caption{Imagen del cuadro robado}
+\label{fig:universe}
+\end{center}
+\vspace{-0.35cm}
+\end{figure}
+
+Antes de pasar a la siguiente sala, se implementó un pequeño script que detectaba cuándo el jugador interactuaba con los elementos que tapaban el cuadro, ya que debe retirarlos para llegar hasta él, y cuándo lo cogía. Este script sería más tarde integrado con el gestor de diálogos para que el vigilante hablara con el jugador mientras llegaba poco a poco su fin. Este script será descrito más adelante.
+
+\subsection{Sala final y desenlace}
+
+Para no terminar el juego tan abruptamente se decidió diseñar una última sala, con elementos como coches de policía, en la que el jugador tuviera un sentimiento de desenlace y de que el vigilante había sido apresando.
+
+Finalmente, se decidió adaptar la antesala del museo, en la que había empezado todo, en la que se añadirían el resto de elementos. Aunque inicialmente se pensó que utilizar la misma escena que la antesala, finalmente se decidió que la sala final tenía la suficientemente autonomía e independencia como para ser una escena en sí misma.
+
+En esta versión de la sala es de noche, para hacer ver al jugador que había pasado todo el día investigando para descubrir al ladrón, y hay varios coches de policía con las luces encendidas aparcados fuera que pueden verse desde los ventanales. Además, las luces del pasillo están encendidas y hay conos, balizas y una cinta de policía que impide la entrada al museo. La sala terminada puede verse en la figura \ref{fig:unity-sala-8}.
 
 \begin{figure}[!h]
 \begin{center}
@@ -669,14 +721,210 @@ Finalmente, antes de terminar la entrega se grabó un vídeo demostrativo, expli
 \end{center}
 \end{figure}
 
+Para el modelado de los coches de policía se ha usado el paquete de modelos de Unity \textit{Low Poly Police Car Pack}\footnote{\url{https://assetstore.unity.com/packages/3d/vehicles/land/low-poly-police-car-pack-59458}}, que puede ser descargado gratuitamente desde su tienda con licencia libre. Este paquete incluye varios modelos \textit{low poly} de coches de policía, lo que permite probarlos rápidamente en la escena y ver cuál queda mejor.
+
+En esta sala, cuando el gestor de diálogos estuviera implementado, se recibiría una última llamada de la directora del museo agradeciéndole su trabajo y despidiéndose hasta la siguiente vez, abriendo la posibilidad a una segunda entrega del juego. 
+
+\subsection{Modelo del vigilante y animaciones}
+
+Como el vigilante juega un papel primordial en la narrativa del juego y su interacción con el jugador era constante, era necesario contar con una representación visual del mismo. Aunque inicialmente se barajó opciones mucho más simples, como utilizar una imagen bidimensional con un dibujo del mismo, totalmente estático, que simplemente estuviera en su sitio. Tras probarlo, el resultado no fue para nada convincente y fue evidente que había que utilizar un modelo tridimensional para el mismo. 
+
+Al principio se buscaron modelos de ancianos con aspecto bonachón, para ocultar la cleptomanía del vigilante, pero aunque se encontraron algunas opciones perfectas, como los que se pueden ver en la figura \ref{fig:modelos-alt}, por \textit{3Dcartoon} (izquierda) y \textit{danielmgt} (derecha) costaban entre 80 y 120 euros, y como uno de los objetivos no funcionales de este proyecto era utilizar modelos gratuitos con licencia libre no fue posible usarlos.
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{imagenes/7/modelos-alt.png}
+\caption{Algunos de los modelos que se valoraron para vigilante}
+\label{fig:modelos-alt}
+\end{center}
+\end{figure}
+
+En su lugar, y tas mucho buscar, se decidió utilizar el modelo de un hombre \textit{low poly} con licencia librel de Denys Almaral\footnote{\url{https://www.turbosquid.com/3d-models/3d-style-couple-casual-man-model-1387761}}, que se adaptó en Blender para hacerle parecer mayor, simplificar su topología y añadir elementos como la placa que tiene en el pecho, ajustar su esqueleto y cambiar el color de su ropa. Este modelo finalizado e importado ya ha podido verse en algunas de las salas anteriormente mostradas.
+
+Tras ello, se importó a Unity se probó, pero era simplemente un modelo estático, lo que lejos de aportar realismo al juego se lo quitaba. Por ello, se decidió añadirle animaciones.
+
+Unity está bastante bien preparado para utilizar animaciones; tiene integrada una herramienta capaz de importar y normalizar automáticamente esqueletos tridimensionales desde un modelo, utilizando una nomenclatura constante para los huesos. De este modo, es posible importar animaciones ya hechas al juego y aplicarlas a un modelo con un esqueleto normalizado para que, con relativamente poca configuración, sea posible utilizarlas con un resultado muy bueno.
+
+Inicialmente se intentó implementar animaciones simples para el vigilante, pero mis habilidades como animador dejan mucho que desear y el resultado no era para nada convincente, por lo que se decidió importarlas ya hechas. El problema de las animaciones universales de Unity es que hay un mercado muy importante a su alrededor, y todos los paquetes medianamente completos que se encontraron eran de pago, llegando a costar cientos de euros. Por ello, ha sido necesario utilizar varios ejemplos de prueba con licencia libre, cada uno conteniendo una de las animaciones buscadas, como el paquete \textit{Idle MoCap} de Morro Motion para el estado de reposo del vigilante o el paquete \textit{Basic Motion} de 3D-Brothers para el saludo y la negación del guardia, por ejemplo.
+
+Una vez que se importaron y se comprobó que funcionaban correctamente, se integraron en el juego. Para ello, lo primero que se hizo fue añadir un componente \textit{Animator} al objeto del vigilante, que relacionaba su esqueleto o \textit{avatar} en Unity con un \textbf{controlador de animaciones}.
+
+Este controlador implementa una máquina de estados, asignando una animación a cada uno de ellos, y permite gestionar de un modo intuitivo las transiciones entre ellos. Como puede verse en la figura \ref{fig:animator}, que presenta en controlador de animaciones final de guarda, y en la que se ha seleccionado la transición desde el estado \textit{Greeting} hasta \textit{Idle}. A su derecha aparece la configuración de la transición, en la que podemos configurar cuánto durará la transición, en qué momento ocurrirá y qué \textbf{condiciones} han de darse.
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=1\textwidth]{imagenes/7/animator.png}
+\caption{Máquina de estados del controlador de animaciones}
+\label{fig:animator}
+\end{center}
+\end{figure}
+
+Estas condiciones pueden configurarse a través de variables desde el propio editor, como puede verse a su derecha. En este caso, se ha asignado una variable booleana a cada transición, lo que permite activarlas cuando la variable cambia. En este caso el estado por defecto, en naranja, es \textit{Idle}, así que cuando la variable \texttt{isGreeting} sea \textit{true} la transición de estado hacia \textit{Greeting} se activará. Estas variables pueden modificarse desde el código fuente, lo que hace el controlador de animaciones una herramienta muy potente.
+
+Estas animaciones están estrechamente ligadas con el sistema de diálogos; de hecho, es el propio gestor de diálogos el encargado de activar las animaciones. Por tanto, se explicará con más detalle en la siguiente sección.
+
+\subsection{Implementación de un sistema de diálogos}
+
+Como el guardia debía disponer de algún método de comunicar información al jugador, se ha diseñado un sistema de diálogos para ello. 
+
+Como en el caso de las descripciones de los cuadros, y como ha podido verse en la figura \ref{fig:camera-overlay}, se ha utilizado un cuadro de texto superpuesto al mundo para que el jugador pueda leer lo que el guarda le dice. Además, como se explica más adelante, se ha añadido un efecto de sonido similar a los que utilizaban videojuegos antiguos para hacerlo más inmersivo.
+
+Como el controlar el momento en el que se encontraba el guarda era muy complejo y abstracto, se ha implementado una máquina de estados para ello, que a su vez controla la animación que está reproduciendo el vigilante. El diagrama de la misma aparece en la figura \ref{fig:dialogs-state-machine}, y como puede verse hay 5 estados en total.
 
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=1\textwidth]{imagenes/7/maquina-estados-dialogos.png}
-\caption{Máquina de diálogos del gestor de diálogos}
+\caption{Diagrama Máquina de diálogos del gestor de diálogos}
 \label{fig:dialogs-state-machine}
 \end{center}
 \end{figure}
 
+Al empezar el juego, el vigilante está callado y con la animación \textit{idle}, pero cuando el jugador se acerca a él (hecho que se detecta con una esfera de colisión), empieza a hablar con él. Cuando cada uno de los diálogos termina, se queda quieto esperando la interacción del jugador con el mando, y cuando pulsa empieza el siguiente diálogo. Sin embargo, cuando el jugador se aleja el guardia se callará hasta que vuelva a acercarse, momento en el que comenzará de nuevo el diálogo por el que iba. Cuando ha terminado todos los archivos de diálogo, pasa al estado terminado, en el que permanece hasta que la escena termina. A menos, claro, que se active algún diálogo especial, como una felicitación o una reprimenda por fallar alguna prueba, momento en el que volvería al estado de hablar.
+
+Para los archivos de dialogo se ha utilizado la siguiente nomenclatura. Desde el punto de vista de la implementación, cada sala tiene una directorio en la que se encuentran sus diálogos, que comienzan por el numero 0, (e.g. \texttt{0.txt}), y aumenta una unidad para denotar el siguiente. Cuando no hay más archivos de texto, el gestor de diálogos lo da por terminado y pasa al estado \texttt{FNISHED}.
+
+Además, se han añadido dos diálogos con la directora del museo, que es la que llama al detective para pedirle su ayuda. El primero sucede en cuanto el jugador entra en la antesala, con un retraso de 4 segundos, en la que le explica la situación y le indica que hable con el vigilante. El segundo ocurre en la sala final, con el mismo retraso, en el que le agradece la ayuda prestada. En ese momento, cuando el jugador termina de hablar con ella se desbloquea la puerta de salida del museo, y el jugador vuelve al menú principal.
+
+Por otro lado, para no hacer que todo el texto apareciese de forma inmediata, se ha hecho que cada letra del texto aparezca cada dos décimas de segundo, intentando imitar la velocidad de un diálogo real. Para ello, y como puede verse en el listado \ref{lst:dialog-manager}, cada frame del juego se comprueba si el vigilante está hablando, y si sí se comprueba si ha pasado suficientemente tiempo como para mostrar otra letra. Si ya se han mostrado todas, se activa el estado de espera y se muestra un icono para que el jugador sepa que tiene que pulsar el botón correspondiente.
+
+\begin{lstlisting}[caption=Fragmento del script del gestor de diálogos, label=lst:dialog-manager]
+private void Update()
+{
+    if (speaking == SpeakingState.SPEAKING)
+    {
+        lastDeltaTime += Time.deltaTime;
+        if (lastDeltaTime > TimeBetweetLetters)
+        {
+            if (currentLetterIndex < 
+                    currentDialog.Length)
+            {
+                DialogObject.text = currentDialog.Substring(0, currentLetterIndex);
+                currentLetterIndex++;
+                lastDeltaTime = 0f;
+            }
+            else
+            {
+                speaking = SpeakingState.WAITING_INPUT;
+                NextDialogIcon.SetActive(true);
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+Por otro lado, para ejemplificar la integración con el controlador de animaciones con el gestor de diálogos, en el listado \ref{lst:animation-manager} se muestra cómo, desde el mismo script que anteriormente, se activa la animación de vigilante sospechoso, lo que se hace en la última y penúltima sala. En él, y como se ha explicado anteriormente, se utilizan las variables ligadas a las transiciones entre estados para activar determinadas animaciones. Uno de los problemas que se ha encontrado es que si simplemente se modifica la variable, la animación actual ha de terminar para que se active su transición; en cambio, si se obliga a reproducirla, como puede verse en la línea \ref{line:force-animm}, cambia automáticamente y sigue respetando las variables para decidir qué hacer cuando dicha animación termine.
+
+\begin{lstlisting}[caption=Fragmento del script para activar animaciones, label=lst:animation-manager, escapechar=|]
+public void ActivateSuspiciousAnimation()
+{
+    Animator animator = Guard.GetComponent<Animator>();
+    if (animator)
+    {
+        animator.CrossFade("Suspicious", 0.5f);|\label{line:force-animm}|
+        animator.SetBool("isIdle", false);
+        animator.SetBool("isSuspicious", true);
+    }
+}
+\end{lstlisting}
+
+Este script, \texttt{DialogManager.cs}, ha resultado ser bastante extenso y complejo, y aunque tiene otras muchas partes interesantes, como la gestión de la interacción del jugador con el mando o de su acercamiento al vigilante dependiendo del estado, se deja al lector el consultarlo.
+
+El resto del trabajo de los diálogos fue de índole narrativa para diseñar todos los diálogos a lo largo de las salas y los de confesión de vigilante, por lo que se omitirán. Si el lector los quiere leer, se encuentran en la ruta \texttt{Assets/Text/Dialogs}.
+
+\subsection{Menú principal del juego}
+
+Una vez que el juegos estaba prácticamente completo, se procedió a diseñar e implementar el menú del juego. Aunque inicialmente se pensó en hacer un menú 2D que no aprovechara el potencial de la \acs{VR}, al investigar se descubrió que el framework \acs{VRTK} soportaba los botones nativos de Unity, por lo que se decidió hacer un menú virtual.
+
+Para ello, se ha tomado como referencia el menú principal del juego \textit{Beat Saber}\footnote{\url{https://beatsaber.com/}}, en el que el jugador se encuentra en un punto sin poder desplazarse, aunque puede move la cabeza, y utiliza láseres que salen desde sus mandos para señalar los botones que quieren pulsar, pulsando un botón para activar su selección. En un intento por lograr que hasta el menú del juego sea inmersivo, como en el caso del \textit{Beat Saber}, se ha decidido modelar una pequeña ciudad con edificios \textit{low poly} en la que el jugador se encuentra en el medio y desde la que ve tanto el propio museo desde fuera como varios botones tridimensionales con los que puede interactuar, como puede verse en la figura \ref{fig:main-menu}. Estos botones le permiten empezar una nueva partida, ver los créditos del juego o salir.
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.85\textwidth]{imagenes/7/salas-unity/unity-menu.png}
+\caption{Menú principal del juego}
+\label{fig:main-menu}
+\end{center}
+\end{figure}
+
+Como el modelar edificios es una tarea trivial, y el tiempo de la entrega estaba llegando a su fin, se decidió buscar paquetes de modelos que pudieran ser utilizados para este fin, y el paquete \textit{Low poly European City Pack} de karboosx, que contiene 8 edificios diferentes que coinciden con la estética del juego.
+
+Tras ello se colocaron los botones y el logo del juego y se limitó la funcionalidad de los mandos para que el jugador no pudiera moverse con ellos. 
+
+Tras ello, se creó el script \texttt{MenuManager.cs} desde el que se añadió un listener diferente a cada botón para poder controlar su funcionamiento. En el listado \ref{lst:menu-manager} se muestra un fragmento de este script, cómo se añade un listener al botón de salir y cómo este script comprueba si se trata del editor de Unity o del juego compilado para decidir qué hacer.
+
+\begin{lstlisting}[caption=Fragmento del script gestionar el menú, label=lst:menu-manager]
+private void Start()
+{
+    if (exitButton != null)
+    {
+        exitButton.onClick.AddListener(OnClickExit);
+    }
+}
+
+private void OnClickExit()
+{
+    PlaySoundEffect();
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        Application.Quit();
+    #endif
+}
+\end{lstlisting}
+
+\subsection{Música de fondo y efectos de sonido}
+
+Por último, como el juego quedaba muy vacío y no había verdadera retroalimentación entre el jugador y su interacción, se decidió añadir música y efectos de sonido al juego.
+
+Para toda la música se ha utilizado la página SoundImage\footnote{\url{https://soundimage.org/}}, un sitio web mantenido por donaciones que proporciona música gratuita y con licencia libre. A continuación se presenta una lista con la canción elegida para cada sala.
+
+\begin{itemize}
+    \item \textbf{Menú.} \textit{Magic Clock Shop}.
+    \item \textbf{Antesala y sala 1.} \textit{Peaceful Evening}.
+    \item \textbf{Sala 2.} \textit{Puzzle Game}.
+    \item \textbf{Sala 3.} \textit{Clippity Clop}.
+    \item \textbf{Sala 4.} \textit{Gentle closure}.
+    \item \textbf{Sala 5.} \textit{Peaceful Mind}.
+    \item \textbf{Sala 6.} \textit{Winding Down}.
+    \item \textbf{Sala 7.} \textit{Thumbing Across Alaska}.
+    \item \textbf{Sala 8.} \textit{The Jazz man}.
+\end{itemize}
+
+Además, para la música de la última sala, se ha utilizado Audacity para solapar sonido de sirenas de policía, ya que en esa sala hay coches de policía, como pudo verse en la figura \ref{fig:unity-sala-8}.
+
+Para toda la música de fondo se ha usado el componente nativo de Unity \textit{Audio Source}, al que basta indicarle la canción que queremos reproducir, si ha de hacerlo en bucle y su volumen.
+
+Por otro lado, se han añadido cuatro efectos de sonido distintos que se enumeran a continuación.
+
+\begin{itemize}
+    \item Cuando el jugador selecciona un elemento del menú, suena un pequeño click, añadiendo retroalimentación.
+    \item Cuando alguien está hablando con el jugador, ya sea la directora o el vigilante, suena un efecto de sonido estilo \textit{8bit}. Este efecto se ha modificado en Audacity para hacerlo más grave en el caso del vigilante y más agudo en el caso de la directora, imitando la diferencia de tonos que suele haber entre voces de hombres y mujeres.
+    \item Cuando la directora llama al jugador, ya que hablan siempre por teléfono, suena el timbre clásico de un teléfono.
+    \item Por último, cuando el jugador activa la descripción de un cuadro suena un sonido de papel arrugado.
+\end{itemize}
+
+Como los efectos de sonido se reproducen en situaciones concretas, ha sido necesario activarlos de manera programática. Para ello, en los scripts que los utilizan, como el gestor de diálogos o el gestor de descripciones de cuadros, se ha añadido el código necesario para ello.
+
+A modo ejemplificativo, en el listado \ref{lst:sound-effects} se muestra el código simplificado del gestor de diálogos que activa el efecto de sonido de una llamada. Como puede verse, recupera su componente para reproducir audio y detiene cualquier sonido que estuviera sonando. Más adelante y por convención, si el diálogo en cuestión contiene la palabra \textit{RING}, hace sonar el respectivo sonido al 5\% de volumen.
+
+\begin{lstlisting}[caption=Fragmento del script para activar efectos de sonido, label=lst:sound-effects]
+private void PlaySoundEffect(string dialog)
+{       
+    AudioSource audioSrc = GetComponent<AudioSource>();
+    audioSrc.Stop();
+
+    if (dialog.Contains("RING"))
+    {
+        audioSrc.PlayOneShot(ringSound, 0.05f);
+    }
+}
+\end{lstlisting}
+
+Finalmente, el resto de trabajo para esta entrega consistió en entregar los archivos de texto con las descripciones de los cuadros. Si el lector quiere leerlos, se encuentra en la ruta \texttt{Assets/Text/Painting\_descriptions}.
+
+Como una de las tareas para la entrega final era grabar un vídeo mostrando el juego entero, no tiene sentido grabar otro enseñando los avances en esta entrega, ya que serían lo mismo, por lo que no se ha hecho.
+
 \section{Entrega 7}
 
+Esta última entrega se ha dedicado a realizar una evaluación del juego con usuarios reales, grabar un vídeo mostrando el juego entero, grabar y editar un tráiler del mismo, terminar de redactar e imprimir la documentación, realizar la presentación del proyecto para la defensa con tribunal.
+
+\subsection{Evaluación con usuarios reales}
