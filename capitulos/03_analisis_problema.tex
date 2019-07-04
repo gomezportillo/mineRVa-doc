@@ -7,9 +7,9 @@ En este capítulo se presenta el nacimiento y la idea inicial de la que parte es
 
 Lo primero que se hizo antes de empezar a trabajar en el proyecto fue proponer una narrativa en la que basar el diseño y desarrollo; por ello, el primer paso que se dio en el proyecto fue redactar el documento \textbf{Guía de salas}, que puede verse en el apéndice \ref{anexo:guia-salas}. En este documento se redactó la primera versión de la narrativa del juego además de una propuesta con las salas que habría en el museo y qué obras de arte y puzzles tendría cada una. Este documento  fue enviado al tutor de este \acs{TFM} y, tras él dar el visto bueno al mismo, se comenzó a trabajar en el proyecto
 
-Además, como se está trabajando siguiendo una metodología enmarcada en el desarrollo de videojuegos, como se explica en profundidad en el capítulo \ref{chap:metodologias}, el siguiente documento en el que se empezó a trabajar y que sirvió de andamio para el proyecto fue el \textbf{\acl{GDD}}, o \acs{GDD}. En un desarrollo real, este documento contendría la información necesaria para que todos los integrantes del proyecto tuvieran clara la idea global del juego, y en este caso es lo mismo; el documento contiene, entre otra información, el resumen, los objetivos o la narrativa del juego, y puede consultarse en el anexo \ref{anexo:gdd}.
+Además, como se está trabajando siguiendo una metodología enmarcada en el desarrollo de videojuegos, como se explica en profundidad en el capítulo \ref{chap:metodologias}, el siguiente documento en el que se empezó a trabajar y que sirvió de andamio para el proyecto fue el \textbf{\acl{GDD}}, o \acs{GDD}. En un desarrollo real, este documento contendría la información necesaria para que todos sus integrantes tuvieran clara la idea global del juego, y en este caso es lo mismo; el documento contiene, entre otra información, el resumen, los objetivos o la narrativa del juego, y puede consultarse en el anexo \ref{anexo:gdd}.
 
-En resumen, \MineRVa es un juego con una historia de un jugador ambientado en un museo compuesto por varias habitaciones ambientadas en las principales épocas históricas con diferentes pruebas que el jugador tiene que superar para completar.
+En resumen, \MineRVa es un juego con una historia de un jugador desarrollado en un museo compuesto por varias habitaciones ambientadas en las principales épocas históricas con diferentes pruebas que el jugador tiene que superar para avanzar.
 
 \section{Narrativa}
 
@@ -17,7 +17,9 @@ La narrativa del proyecto ha intentado ser enmarcada en un museo creíble y real
 
 El encargado de recibir al jugador en el museo es su vigilante, un vetusto y campechano señor que ha pasado toda su vida trabajando en él. Este personaje será el encargado de introducir al jugador la historia y las mecánicas del juego, de explicarle su misión y de guiarle a través de las distintas salas, ayudándole para que no se quede atascado.
 
-Pero cuál es la sorpresa del jugador cuando, tras completar todas las pruebas y llegar al final del museo, descubre que ha sido el propio vigilante quien ha robado el cuadro para su disfrute personal.
+Pero cuál es la sorpresa del jugador cuando, tras completar todas las pruebas y llegar al final del museo, descubre el misterioso ladrón de guante blanco es en realidad el propio vigilante, quien ha robado el cuadro para su disfrute personal.
+
+Como puede verse, es necesario el vigilante disponga de un método para poder comunicar información al jugador, y lo que más encaja con la naturaleza de este proyecto son \textbf{diálogos unidireccionales}, ya que el jugador no podría hablar con él. El vigilante utilizará estos diálogos para explicar al usuario su misión en cada sala, le informará de algunos de sus errores y le felicitará cuando realice correctamente las tareas más importantes.
 
 \section{Mundo virtual}
 
@@ -50,3 +52,9 @@ La siguiente sala corresponderá al \textbf{romanticismo}, por lo que se habrá 
 La última sala estará ambientada en las \textbf{vanguardias del siglo XX}. Aunque en este período coexisten multitud de estilos distintos, se han elegido el \textbf{cubismo}, el \textbf{expresionismo}, el \textbf{surrealismo} y el \textbf{postimpresionismo} como los más representativos, por lo que los cuadros utilizados para esta sala son, respectivamente, el \textit{Guernica} de Pablo Picasso (1937), \textit{El grito} de Edvard Munch (1910), \textit{La tentación de San Antonio} de Salvador Dalí (1946) y \textit{La noche estrellada} de Vincent van Gogh (1889).
 
 Cuando el jugador complete todas las salas podrá acceder a la \textbf{sala final}, en la que descubrirá que el vigilante que creía su amigo es en realidad el ladrón de guante blanco al que ha estado persiguiendo desde el principio.
+
+\subsection{Retos}
+
+Como ha podido verse, las salas que componen el museo son muy variadas entre sí, y los acertijos en ellas también. Para evitar que las salas sean monótonas y repetitivas, cada una de ellas tendrá un reto totalmente diferente y hecho a medida que el jugador tendrá que superar para acceder a la siguiente sala. 
+
+Todos estas pruebas estarán enmarcadas dentro de diversas dinámicas de Realidad Virtual, donde el jugador deberá ser proactivo e investigar qué debe hacer y cómo hacerlo. Por ejemplo, deberá observar los cuadros para encontrar mensajes ocultos, interactuar con ellos y con otros elementos del entorno o incluso hacer que los propios cuadros cambien para poder avanzar.
